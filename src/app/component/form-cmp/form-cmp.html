@@ -1,0 +1,230 @@
+<!-- Cambiamos (submit) por (ngSubmit) y pasamos el formulario -->
+<form class="flex flex-col gap-6" (ngSubmit)="enviarFormulario(formulario)" #formulario="ngForm">
+  <h3 class="text-2xl font-bold text-primary mb-2">Solicitar Asesoría</h3>
+
+  <div>
+    <label class="block text-sm font-semibold text-primary mb-3">Interés principal</label>
+    <div class="flex flex-wrap gap-2">
+      <button
+        type="button"
+        (click)="seleccionarInteres('vida/prepaga')"
+        class="px-4 py-2 rounded-full text-sm font-bold transition-all border-2"
+        [class]="interesPrincipal === 'vida/prepaga' ? 'bg-primary border-primary text-surface' : 'bg-transparent border-primary/20 text-primary hover:border-primary'"
+      >
+        Seguro de Vida
+      </button>
+      <button
+        type="button"
+        (click)="seleccionarInteres('hogar')"
+        class="px-4 py-2 rounded-full text-sm font-bold transition-all border-2"
+        [class]="interesPrincipal === 'hogar' ? 'bg-primary border-primary text-surface' : 'bg-transparent border-primary/20 text-primary hover:border-primary'"
+      >
+        Hogar
+      </button>
+      <button
+        type="button"
+        (click)="seleccionarInteres('vehicular')"
+        class="px-4 py-2 rounded-full text-sm font-bold transition-all border-2"
+        [class]="interesPrincipal === 'vehicular' ? 'bg-primary border-primary text-surface' : 'bg-transparent border-primary/20 text-primary hover:border-primary'"
+      >
+        Vehicular
+      </button>
+      <button
+        type="button"
+        (click)="seleccionarInteres('empresas')"
+        class="px-4 py-2 rounded-full text-sm font-bold transition-all border-2"
+        [class]="interesPrincipal === 'empresas' ? 'bg-primary border-primary text-surface' : 'bg-transparent border-primary/20 text-primary hover:border-primary'"
+      >
+        Empresas / Laboral
+      </button>
+      <button
+        type="button"
+        (click)="seleccionarInteres('otros')"
+        class="px-4 py-2 rounded-full text-sm font-bold transition-all border-2"
+        [class]="interesPrincipal === 'otros' ? 'bg-primary border-primary text-surface' : 'bg-transparent border-primary/20 text-primary hover:border-primary'"
+      >
+        Otros
+      </button>
+    </div>
+  </div>
+
+  <div class="bg-primary/5 p-4 rounded-lg border border-primary/10">
+    @if (interesPrincipal === 'vida/prepaga') {
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-semibold text-primary mb-2">Tipo de cobertura</label>
+        <select
+          name="cobertura"
+          [(ngModel)]="datos.tipoCobertura"
+          class="w-full px-4 py-3 rounded-lg border border-neutral/20 focus:outline-none focus:ring-2 focus:ring-secondary bg-surface text-primary"
+        >
+          <option value="soltero">Individual / Soltero</option>
+          <option value="familiar">Grupo Familiar</option>
+        </select>
+      </div>
+      <div>
+        <!-- Hicimos obligatorio el DNI -->
+        <label class="block text-sm font-semibold text-primary mb-2">DNI *</label>
+        <input
+          type="text"
+          name="dni"
+          [(ngModel)]="datos.dni"
+          required
+          class="w-full px-4 py-3 rounded-lg border border-neutral/20 focus:outline-none focus:ring-2 focus:ring-secondary bg-surface text-primary"
+          placeholder="Ej. 12.345.678"
+        />
+      </div>
+    </div>
+    } @if (interesPrincipal === 'hogar') {
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <!-- Hicimos obligatorio el DNI -->
+        <label class="block text-sm font-semibold text-primary mb-2">DNI *</label>
+        <input
+          type="text"
+          name="dniHogar"
+          [(ngModel)]="datos.dni"
+          required
+          class="w-full px-4 py-3 rounded-lg border border-neutral/20 focus:outline-none focus:ring-2 focus:ring-secondary bg-surface text-primary"
+          placeholder="Ej. 12.345.678"
+        />
+      </div>
+      <div>
+        <!-- Hicimos obligatoria la ubicación -->
+        <label class="block text-sm font-semibold text-primary mb-2">Ubicación *</label>
+        <input
+          type="text"
+          name="ubicacion"
+          [(ngModel)]="datos.ubicacion"
+          required
+          class="w-full px-4 py-3 rounded-lg border border-neutral/20 focus:outline-none focus:ring-2 focus:ring-secondary bg-surface text-primary"
+          placeholder="Ej. Pilar, Buenos Aires"
+        />
+      </div>
+    </div>
+    } @if (interesPrincipal === 'vehicular') {
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div>
+        <!-- Hicimos obligatoria la Marca -->
+        <label class="block text-sm font-semibold text-primary mb-2">Marca *</label>
+        <input
+          type="text"
+          name="marca"
+          [(ngModel)]="datos.marca"
+          required
+          class="w-full px-4 py-3 rounded-lg border border-neutral/20 focus:outline-none focus:ring-2 focus:ring-secondary bg-surface text-primary"
+          placeholder="Ej. Toyota"
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-primary mb-2">Modelo</label>
+        <input
+          type="text"
+          name="modelo"
+          [(ngModel)]="datos.modelo"
+          class="w-full px-4 py-3 rounded-lg border border-neutral/20 focus:outline-none focus:ring-2 focus:ring-secondary bg-surface text-primary"
+          placeholder="Ej. Corolla"
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-primary mb-2">Año</label>
+        <input
+          type="number"
+          name="anio"
+          [(ngModel)]="datos.anio"
+          class="w-full px-4 py-3 rounded-lg border border-neutral/20 focus:outline-none focus:ring-2 focus:ring-secondary bg-surface text-primary"
+          placeholder="Ej. 2022"
+        />
+      </div>
+    </div>
+    } @if (interesPrincipal === 'empresas') {
+    <div class="grid grid-cols-1 gap-4">
+      <div>
+        <!-- Hicimos obligatorio el CUIT -->
+        <label class="block text-sm font-semibold text-primary mb-2">CUIT de la Empresa *</label>
+        <input
+          type="text"
+          name="cuit"
+          [(ngModel)]="datos.cuit"
+          required
+          class="w-full px-4 py-3 rounded-lg border border-neutral/20 focus:outline-none focus:ring-2 focus:ring-secondary bg-surface text-primary"
+          placeholder="Ej. 30-12345678-9"
+        />
+      </div>
+      <p class="text-sm font-semibold text-secondary flex items-center gap-2 mt-2">
+        <span class="material-symbols-outlined text-base">info</span> Analizaremos su CUIT y nos
+        comunicaremos pronto.
+      </p>
+    </div>
+    }
+  </div>
+
+  <div>
+    <label class="block text-sm font-semibold text-primary mb-2">Nombre completo *</label>
+    <input
+      type="text"
+      name="nombre"
+      [(ngModel)]="datos.nombre"
+      required
+      class="w-full px-4 py-3 rounded-lg border border-neutral/20 focus:outline-none focus:ring-2 focus:ring-secondary bg-surface text-primary"
+      placeholder="Ej. Juan Pérez"
+    />
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-2">
+    <div>
+      <label class="block text-sm font-semibold text-primary mb-2">Correo electrónico</label>
+      <input
+        type="email"
+        name="email"
+        [(ngModel)]="datos.email"
+        class="w-full px-4 py-3 rounded-lg border border-neutral/20 focus:outline-none focus:ring-2 focus:ring-secondary bg-surface text-primary"
+        placeholder="juan@correo.com"
+      />
+    </div>
+    <div>
+      <label class="block text-sm font-semibold text-primary mb-2">Teléfono *</label>
+      <input
+        type="tel"
+        name="telefono"
+        [(ngModel)]="datos.telefono"
+        required
+        class="w-full px-4 py-3 rounded-lg border border-neutral/20 focus:outline-none focus:ring-2 focus:ring-secondary bg-surface text-primary"
+        placeholder="+54 9 11 1234-5678"
+      />
+    </div>
+  </div>
+
+  <div>
+    <label class="block text-sm font-semibold text-primary mb-2">Comentarios / Observaciones</label>
+    <textarea
+      name="comentarios"
+      [(ngModel)]="datos.comentarios"
+      rows="4"
+      class="w-full px-4 py-3 rounded-lg border border-neutral/20 focus:outline-none focus:ring-2 focus:ring-secondary bg-surface text-primary resize-none"
+      placeholder="Cuéntenos un poco más sobre lo que necesita..."
+    ></textarea>
+  </div>
+
+  @if (mensajeExito) {
+  <div
+    class="bg-emerald-100 border border-emerald-400 text-emerald-700 px-4 py-3 rounded-lg flex items-center gap-2"
+  >
+    <span class="material-symbols-outlined">check_circle</span>
+    <p class="text-sm font-bold">¡Mensaje enviado con éxito! Nos contactaremos pronto.</p>
+  </div>
+  }
+
+  <!-- Botón deshabilitado si formulario.invalid es verdadero -->
+  <button
+    type="submit"
+    [disabled]="enviando || formulario.invalid"
+    class="w-full bg-primary text-surface px-8 py-4 rounded-lg font-bold hover:bg-primary/90 transition-all shadow-md active:scale-95 mt-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+  >
+    @if (enviando) {
+    <div
+      class="w-5 h-5 border-2 border-surface border-t-transparent rounded-full animate-spin"
+    ></div>
+    Enviando... } @else { Enviar Solicitud }
+  </button>
+</form>

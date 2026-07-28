@@ -1,0 +1,9 @@
+<!-- Envolvemos todo en un div que ocupa el 100% de la celda del grid -->
+<div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-neutral/10 transition-all duration-300 w-full h-full"
+     [class.hover:shadow-md]="interactive"
+     [class.hover:-translate-y-1]="interactive">
+
+  <!-- Angular inyectará el contenido aquí -->
+  <ng-content></ng-content>
+
+</div>

@@ -1,0 +1,101 @@
+<footer class="bg-primary text-surface/80 pt-16 pb-8 px-4 md:px-8 border-t-[8px] border-secondary">
+  <div class="max-w-7xl mx-auto">
+    <!-- Grilla principal del Footer -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
+      <!-- Columna 1: Marca y Descripción -->
+      <div class="flex flex-col items-center md:items-start text-center md:text-left gap-4">
+        <h3 class="text-2xl font-extrabold text-surface tracking-wide">
+          Ase de la Cruz<span class="text-secondary">.</span>
+        </h3>
+        <p class="text-sm leading-relaxed max-w-xs">
+          Su tranquilidad y la seguridad de su patrimonio son nuestra máxima prioridad.
+          Asesoramiento experto e integral en seguros personales y corporativos.
+        </p>
+        <!-- Redes Sociales   para otro momento!!!
+        <div class="flex gap-4 mt-2">
+          <a href="#" class="w-10 h-10 rounded-full bg-surface/10 flex items-center justify-center hover:bg-secondary hover:text-primary transition-all">
+            <span class="material-symbols-outlined text-sm">language</span>
+          </a>
+          <a href="#" class="w-10 h-10 rounded-full bg-surface/10 flex items-center justify-center hover:bg-secondary hover:text-primary transition-all">
+            <span class="material-symbols-outlined text-sm">mail</span>
+          </a>
+        </div>
+        -->
+      </div>
+
+      <!-- Columna 2: Enlaces Rápidos
+      <div class="flex flex-col gap-4">
+        <h4 class="text-lg font-bold text-surface mb-2">Enlaces Rápidos</h4>
+        <nav class="flex flex-col gap-3">
+          <a href="#inicio" class="text-sm hover:text-secondary hover:translate-x-1 transition-all w-fit">Inicio</a>
+          <a href="#propuesta" class="text-sm hover:text-secondary hover:translate-x-1 transition-all w-fit">Nuestra Propuesta</a>
+          <a href="#testimonios" class="text-sm hover:text-secondary hover:translate-x-1 transition-all w-fit">Por qué elegirnos</a>
+          <a href="#metodo" class="text-sm hover:text-secondary hover:translate-x-1 transition-all w-fit">Nuestro Método</a>
+          <a href="#contacto" class="text-sm hover:text-secondary hover:translate-x-1 transition-all w-fit">Solicitar Asesoría</a>
+        </nav>
+      </div>
+      -->
+
+      <!-- Columna 3: Contacto -->
+      <!-- Columna 3: Contacto -->
+      <div class="flex flex-col items-center md:items-start text-center md:text-left gap-4">
+        <h4 class="text-lg font-bold text-surface mb-2">Contacto</h4>
+
+        <!-- EL TRUCO: Este div "w-fit" mantiene los íconos alineados entre sí,
+             mientras el padre "items-center" centra todo el bloque en mobile -->
+        <div class="flex flex-col gap-4 w-fit">
+          <!-- Teléfonos -->
+          <div class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-secondary mt-0.5">call</span>
+            <!-- text-left asegura que los números queden alineaditos con el ícono -->
+            <div class="flex flex-col text-sm text-left">
+              <span>
+                <a href="https://wa.me/1141769566" target="_blank"> +54 9 11 41769566 </a>
+              </span>
+              <span>
+                <a href="https://wa.me/1161696120" target="_blank"> +54 9 11 61696120 </a>
+              </span>
+              <span>
+                <a href="https://wa.me/1123327062" target="_blank"> +54 9 11 23327062 </a>
+              </span>
+            </div>
+          </div>
+
+          <!-- Correo -->
+          <div class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-secondary mt-0.5">mail</span>
+            <!-- text-left asegura que los correos queden alineaditos con el ícono -->
+            <div class="flex flex-col text-sm text-left gap-1">
+              <a
+                href="mailto:diegog.garcia1@gmail.com"
+                class="hover:text-secondary transition-colors"
+              >
+                diegog.garcia1@gmail.com
+              </a>
+              <a
+                href="mailto:lautarogonzalogarcia@outlook.com"
+                class="hover:text-secondary transition-colors"
+              >
+                lautarogonzalogarcia@outlook.com
+              </a>
+              <a
+                href="mailto:franciscoggarcia722@gmail.com"
+                class="hover:text-secondary transition-colors"
+              >
+                franciscoggarcia722@gmail.com
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Barra inferior (Copyright) -->
+    <div
+      class="border-t border-surface/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs opacity-70"
+    >
+      <p>&copy; {{ anioActual }} Asesores de la Cruz. Todos los derechos reservados.</p>
+      <p>Desarrollado con <span class="text-secondary">&hearts;</span></p>
+    </div>
+  </div>
+</footer>
