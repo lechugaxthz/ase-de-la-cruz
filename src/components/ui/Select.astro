@@ -1,0 +1,52 @@
+---
+interface Props {
+  id: string;
+  name: string;
+  label: string;
+  options: { value: string; label: string }[];
+  value?: string;
+  required?: boolean;
+  disabled?: boolean;
+  error?: string;
+  hint?: string;
+  class?: string;
+  placeholder?: string;
+}
+---
+{{
+  const { id, name, label, options, value, required = false, disabled = false, error, hint, class: className = '', placeholder } = Astro.props;
+
+  const selectClasses = `
+    w-full px-4 py-3 rounded-lg border bg-white text-dark appearance-none
+    focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
+    disabled:bg-surface-alt disabled:cursor-not-allowed
+    transition-all duration-200
+    ${error ? 'border-error focus:ring-error/30 focus:border-error' : 'border-border'}
+    ${className}
+  `;
+
+  const labelClasses = `block text-sm font-medium text-dark-light mb-2 ${required ? 'after:content-["*"] after:text-error after:ml-1' : ''}`;
+}}
+<div class={className}>
+  <label for={id} class={labelClasses}>{label}</label>
+  <div class="relative">
+    <select
+      id={id}
+      name={name}
+      value={value}
+      required={required}
+      disabled={disabled}
+      class={selectClasses}
+      aria-invalid={error ? 'true' : 'false'}
+      aria-describedby={error ? `${id}-error` : hint ? `${id}-hint` : undefined}
+    >
+      {placeholder && <option value="" disabled selected hidden>{placeholder}</option>}
+      {options.map(opt => <option value={opt.value} selected={value === opt.value}>{opt.label}</option>)}
+    </select>
+    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-muted">
+      <span class="material-symbols-outlined text-base">expand_more</span>
+    </div>
+  </div>
+  {error && <p id={`${id}-error`} class="mt-1.5 text-sm text-error" role="alert">{error}</p>}
+  {hint && !error && <p id={`${id}-hint`} class="mt-1.5 text-sm text-muted">{hint}</p>}
+</div>

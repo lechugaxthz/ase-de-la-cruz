@@ -1,0 +1,28 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import Container from '../components/ui/Container.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  type?: 'website' | 'article';
+  publishedTime?: string;
+  modifiedTime?: string;
+  author?: string;
+  section?: string;
+  tags?: string[];
+  noIndex?: boolean;
+  noFollow?: boolean;
+  canonicalURL?: string;
+}
+---
+<BaseLayout {...Astro.props}>
+  <Header />
+  <main id="main-content" class="min-h-screen pt-20">
+    <slot />
+  </main>
+  <Footer />
+</BaseLayout>

@@ -1,0 +1,74 @@
+---
+interface Props {
+  title: string;
+  content: any;
+  open?: boolean;
+  class?: string;
+  icon?: string;
+}
+---
+{{
+  const { title, content, open = false, class: className = '', icon = 'expand_more' } = Astro.props;
+  const id = `accordion-${Math.random().toString(36).slice(2,9)}`;
+}}
+<div class={`border-b border-border ${className}`}>
+  <button
+    type="button"
+    class="w-full flex items-center justify-between py-4 text-left focus:outline-none focus:ring-2 focus:ring-primary/30 focus:ring-inset"
+    aria-expanded={open}
+    aria-controls={`${id}-content`}
+    data-accordion-trigger
+  >
+    <span class="font-medium text-dark-light flex items-center gap-2">
+      {icon && <span class="material-symbols-outlined text-base text-muted">{icon}</span>}
+      {title}
+    </span>
+    <span class="material-symbols-outlined text-muted transition-transform duration-200" data-accordion-icon>
+      {icon}
+    </span>
+  </button>
+
+  <div
+    id={`${id}-content`}
+    class="overflow-hidden transition-all duration-300 ease-out"
+    role="region"
+    aria-labelledby={`${id}-trigger`}
+    data-accordion-content
+    style={open ? 'max-height: 1000px; opacity: 1;' : 'max-height: 0; opacity: 0;'}
+  >
+    <div class="pb-4 text-muted leading-relaxed">
+      <slot name="content" />
+      {content}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('[data-accordion-trigger]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const content = btn.nextElementSibling as HTMLElement;
+      const icon = btn.querySelector('[data-accordion-icon]') as HTMLElement;
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+
+      btn.setAttribute('aria-expanded', String(!isOpen));
+      if (!isOpen) {
+        content.style.maxHeight = content.scrollHeight + 'px';
+        content.style.opacity = '1';
+        icon.style.transform = 'rotate(180deg)';
+      } else {
+        content.style.maxHeight = '0';
+        content.style.opacity = '0';
+        icon.style.transform = 'rotate(0deg)';
+      }
+    });
+  });
+
+  // Initialize open accordions
+  document.querySelectorAll('[data-accordion-trigger][aria-expanded="true"]').forEach(btn => {
+    const content = btn.nextElementSibling as HTMLElement;
+    const icon = btn.querySelector('[data-accordion-icon]') as HTMLElement;
+    content.style.maxHeight = content.scrollHeight + 'px';
+    content.style.opacity = '1';
+    icon.style.transform = 'rotate(180deg)';
+  });
+</script>

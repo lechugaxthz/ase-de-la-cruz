@@ -1,0 +1,61 @@
+---
+import Container from '../ui/Container.astro';
+
+interface Props {
+  quote: string;
+  author?: string;
+  role?: string;
+  avatar?: string;
+  backgroundImage?: string;
+  class?: string;
+}
+---
+{{
+  const {
+    quote,
+    author = 'Ase de la Cruz Assurance Group',
+    role = 'Equipo de Asesores',
+    avatar,
+    backgroundImage,
+    class: className = '',
+  } = Astro.props;
+}}
+<section id="testimonios" class={`relative py-24 overflow-hidden ${className}`} aria-labelledby="testimonial-title">
+  <!-- Background -->
+  <div class="absolute inset-0 bg-primary z-0">
+    {backgroundImage && (
+      <img src={backgroundImage} alt="" class="w-full h-full object-cover opacity-10" />
+    )}
+    <!-- Watermark Quote -->
+    <div class="absolute top-1/2 -translate-y-1/2 -right-4 lg:right-10 opacity-10 select-none pointer-events-none">
+      <span class="material-symbols-outlined text-white leading-none text-[250px] lg:text-[350px]">
+        format_quote
+      </span>
+    </div>
+  </div>
+
+  <Container>
+    <div class="relative z-10 max-w-4xl mx-auto text-center">
+      <!-- Central Icon -->
+      <span class="material-symbols-outlined text-amber-300 text-5xl mb-6 block">format_quote</span>
+
+      <!-- Quote -->
+      <blockquote id="testimonial-title" class="text-3xl sm:text-4xl lg:text-5xl font-heading font-extrabold italic leading-tight mb-8 text-white">
+        "{quote}"
+      </blockquote>
+
+      <!-- Author -->
+      <div class="flex items-center justify-center gap-3">
+        {avatar && (
+          <img src={avatar} alt="" class="w-12 h-12 rounded-full object-cover border-2 border-amber-300" />
+        )}
+        <div class="text-left">
+          <p class="text-sm font-bold uppercase tracking-widest text-amber-300">
+            — {author}
+          </p>
+          <p class="text-white/70 text-sm">{role}</p>
+        </div>
+      </div>
+    </div>
+  </Container>
+</section>

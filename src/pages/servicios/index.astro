@@ -1,0 +1,113 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import Hero from '../../components/sections/Hero.astro';
+import ServicesGrid from '../../components/sections/ServicesGrid.astro';
+import CTA from '../../components/sections/CTA.astro';
+import { getCollection } from 'astro:content';
+
+const servicios = await getCollection('servicios');
+const allServices = servicios.sort((a, b) => a.data.order - b.data.order);
+
+const categories = ['salud', 'vida', 'hogar', 'vehicular', 'empresas', 'art'];
+---
+
+<PageLayout
+  title="Servicios - Ase de la Cruz"
+  description="Explorá todas nuestras coberturas: Salud, Vida, Hogar, Automotores, Empresas y ART. Asesoramiento experto para cada necesidad."
+  image="/images/og-servicios.jpg"
+>
+  <!-- Hero -->
+  <Hero
+    badge="Nuestros Servicios"
+    title="Coberturas integrales para cada etapa de tu vida"
+    subtitle="Desde seguros personales hasta soluciones corporativas completas. Trabajamos con las aseguradoras más prestigiosas del país."
+    primaryCTA={{ label: 'Hablar con un asesor', href: '/contacto', icon: 'chat' }}
+    secondaryCTA={{ label: 'Ver todos los servicios', href: '#servicios-grid', icon: 'arrow_forward' }}
+    minHeight="min-h-[60vh]"
+  />
+
+  <!-- Services Grid -->
+  <ServicesGrid
+    id="servicios-grid"
+    services={allServices.map(s => ({ ...s.data, slug: s.slug }))}
+    title="Catálogo de Servicios"
+    subtitle="Filtrá por categoría o explorá todas las opciones"
+    filterable={true}
+    categories={categories}
+  />
+
+  <!-- FAQ Section -->
+  <section id="faq" class="py-16 sm:py-24 bg-surface" aria-labelledby="faq-title">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 id="faq-title" class="text-3xl sm:text-4xl font-heading font-extrabold text-dark mb-4">
+          Preguntas Frecuentes
+        </h2>
+        <p class="text-muted text-lg leading-relaxed">
+          Respuestas rápidas a las consultas más comunes
+        </p>
+      </div>
+
+      <div class="max-w-3xl mx-auto space-y-4">
+        <details class="group bg-white rounded-xl border border-border p-6 animate-in">
+          <summary class="flex items-center justify-between cursor-pointer list-none font-semibold text-dark-light">
+            <span>¿Puedo contratar un seguro 100% online?</span>
+            <span class="material-symbols-outlined text-primary transition-transform group-open:rotate-180">expand_more</span>
+          </summary>
+          <div class="mt-4 text-muted leading-relaxed border-t border-border pt-4">
+            <p>Sí, la mayoría de nuestros seguros se pueden cotizar y contratar digitalmente. Para coberturas complejas (vida alto capital, ART, riesgos especiales) preferimos una llamada breve para asegurar que la póliza se ajuste perfectamente a tu necesidad.</p>
+          </div>
+        </details>
+
+        <details class="group bg-white rounded-xl border border-border p-6 animate-in">
+          <summary class="flex items-center justify-between cursor-pointer list-none font-semibold text-dark-light">
+            <span>¿Qué documentación necesito para contratar?</span>
+            <span class="material-symbols-outlined text-primary transition-transform group-open:rotate-180">expand_more</span>
+          </summary>
+          <div class="mt-4 text-muted leading-relaxed border-t border-border pt-4">
+            <p>Generalmente: DNI, comprobante de domicilio y datos del bien a asegurar (auto: patente, marca, modelo, año; hogar: dirección, metros cuadrados; vida: DNI y declaración de salud). Te guiamos en cada paso.</p>
+          </div>
+        </details>
+
+        <details class="group bg-white rounded-xl border border-border p-6 animate-in">
+          <summary class="flex items-center justify-between cursor-pointer list-none font-semibold text-dark-light">
+            <span>¿Cómo funciona el proceso de siniestros?</span>
+            <span class="material-symbols-outlined text-primary transition-transform group-open:rotate-180">expand_more</span>
+          </summary>
+          <div class="mt-4 text-muted leading-relaxed border-t border-border pt-4">
+            <p>Nosotros gestionamos todo por vos: 1) Denunciás el siniestro a nuestro WhatsApp/email, 2) Reunimos la documentación, 3) Presentamos el reclamo a la aseguradora, 4) Negociamos y hacemos seguimiento hasta el cobro. Vos solo aportás la info inicial.</p>
+          </div>
+        </details>
+
+        <details class="group bg-white rounded-xl border border-border p-6 animate-in">
+          <summary class="flex items-center justify-between cursor-pointer list-none font-semibold text-dark-light">
+            <span>¿Tienen seguros para empresas y PYMES?</span>
+            <span class="material-symbols-outlined text-primary transition-transform group-open:rotate-180">expand_more</span>
+          </summary>
+          <div class="mt-4 text-muted leading-relaxed border-t border-border pt-4">
+            <p>Sí, es una de nuestras especialidades. Cubrimos: multirriesgo comercio/industria, responsabilidad civil general y profesional, ART, ciberriesgos, D&O, equipos electrónicos, lucro cesante, transporte y flota vehicular.</p>
+          </div>
+        </details>
+
+        <details class="group bg-white rounded-xl border border-border p-6 animate-in">
+          <summary class="flex items-center justify-between cursor-pointer list-none font-semibold text-dark-light">
+            <span>¿Qué diferencia hay entre ART y seguro de accidentes personales?</span>
+            <span class="material-symbols-outlined text-primary transition-transform group-open:rotate-180">expand_more</span>
+          </summary>
+          <div class="mt-4 text-muted leading-relaxed border-t border-border pt-4">
+            <p>La ART (Aseguradora de Riesgos del Trabajo) es obligatoria para todo empleador y cubre accidentes laborales e in itinere. El seguro de accidentes personales es voluntario, cubre 24hs (laboral y extra-laboral) y puede contratarlo cualquier persona.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <CTA
+    title="¿No encontrás lo que buscás?"
+    subtitle="Tenemos soluciones a medida para necesidades especiales. Contanos tu caso y te armamos una propuesta personalizada."
+    primaryCTA={{ label: 'Solicitar propuesta a medida', href: '/contacto', icon: 'arrow_forward' }}
+    secondaryCTA={{ label: 'Llamar por WhatsApp', href: 'https://wa.me/5491141769566', icon: 'chat' }}
+    background="primary"
+  />
+</PageLayout>

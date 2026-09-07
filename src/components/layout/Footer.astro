@@ -1,0 +1,129 @@
+---
+import Container from '../ui/Container.astro';
+
+const currentYear = new Date().getFullYear();
+
+const footerLinks = {
+  navegacion: [
+    { href: '/', label: 'Inicio' },
+    { href: '/servicios', label: 'Servicios' },
+    { href: '/nosotros', label: 'Nosotros' },
+    { href: '/blog', label: 'Blog' },
+    { href: '/contacto', label: 'Contacto' },
+    { href: '/faq', label: 'Preguntas Frecuentes' },
+  ],
+  servicios: [
+    { href: '/servicios#salud', label: 'Salud y Prepaga' },
+    { href: '/servicios#vida', label: 'Vida y Ahorro' },
+    { href: '/servicios#hogar', label: 'Hogar y Patrimonio' },
+    { href: '/servicios#vehicular', label: 'Automotores' },
+    { href: '/servicios#empresas', label: 'Empresas y Profesionales' },
+    { href: '/servicios#art', label: 'ART - Riesgos del Trabajo' },
+  ],
+  legal: [
+    { href: '/privacidad', label: 'Política de Privacidad' },
+    { href: '/terminos', label: 'Términos y Condiciones' },
+    { href: '/cookies', label: 'Política de Cookies' },
+  ]
+};
+
+const phones = [
+  { number: '+54 9 11 41769566', label: 'Diego García' },
+  { number: '+54 9 11 61696120', label: 'Lautaro González' },
+  { number: '+54 9 11 23327062', label: 'Francisco García' },
+];
+
+const emails = [
+  'diegog.garcia1@gmail.com',
+  'lautarogonzalogarcia@outlook.com',
+  'franciscoggarcia722@gmail.com',
+];
+---
+<footer class="bg-dark text-white/80 pt-16 pb-8 border-t-8 border-primary" role="contentinfo">
+  <Container>
+    <!-- Main Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+      <!-- Brand Column -->
+      <div class="lg:col-span-1 flex flex-col gap-4">
+        <a href="/" class="text-2xl font-heading font-extrabold text-white tracking-wide flex items-center gap-1" aria-label="Ase de la Cruz - Inicio">
+          Ase de la Cruz<span class="text-primary">.</span>
+        </a>
+        <p class="text-sm leading-relaxed max-w-xs text-white/70">
+          Su tranquilidad y la seguridad de su patrimonio son nuestra máxima prioridad.
+          Asesoramiento experto e integral en seguros personales y corporativos.
+        </p>
+        <div class="flex gap-3 mt-2" role="list" aria-label="Redes sociales">
+          <a href="https://wa.me/1141769566" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary hover:text-white transition-all" aria-label="WhatsApp">
+            <span class="material-symbols-outlined text-base">chat</span>
+          </a>
+          <a href="mailto:diegog.garcia1@gmail.com" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary hover:text-white transition-all" aria-label="Email">
+            <span class="material-symbols-outlined text-base">mail</span>
+          </a>
+          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary hover:text-white transition-all" aria-label="LinkedIn">
+            <span class="material-symbols-outlined text-base">business</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Navigation Column -->
+      <div class="flex flex-col gap-6">
+        <h3 class="text-sm font-bold uppercase tracking-wider text-white">Navegación</h3>
+        <nav class="flex flex-col gap-2" aria-label="Enlaces de navegación">
+          {footerLinks.navegacion.map(link => (
+            <a href={link.href} class="text-sm text-white/70 hover:text-primary transition-colors">{link.label}</a>
+          ))}
+        </nav>
+      </div>
+
+      <!-- Services Column -->
+      <div class="flex flex-col gap-6">
+        <h3 class="text-sm font-bold uppercase tracking-wider text-white">Servicios</h3>
+        <nav class="flex flex-col gap-2" aria-label="Servicios ofrecidos">
+          {footerLinks.servicios.map(link => (
+            <a href={link.href} class="text-sm text-white/70 hover:text-primary transition-colors">{link.label}</a>
+          ))}
+        </nav>
+      </div>
+
+      <!-- Contact Column -->
+      <div class="flex flex-col gap-6">
+        <h3 class="text-sm font-bold uppercase tracking-wider text-white">Contacto</h3>
+        <div class="flex flex-col gap-4">
+          <!-- Phones -->
+          <div class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-primary mt-0.5 flex-shrink-0">call</span>
+            <div class="flex flex-col gap-1 text-sm">
+              {phones.map(phone => (
+                <a href={`https://wa.me/${phone.number.replace(/\s|\+|-/g, '')}`} target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-primary transition-colors flex items-center gap-1">
+                  <span>{phone.number}</span>
+                  <span class="text-primary text-xs">{phone.label}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <!-- Emails -->
+          <div class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-primary mt-0.5 flex-shrink-0">mail</span>
+            <div class="flex flex-col gap-1 text-sm">
+              {emails.map(email => (
+                <a href={`mailto:${email}`} class="text-white/70 hover:text-primary transition-colors">{email}</a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-white/50">
+      <p>&copy; {currentYear} Ase de la Cruz. Todos los derechos reservados.</p>
+      <p>Desarrollado con <span class="text-primary">&hearts;</span> para proteger su patrimonio</p>
+      <nav class="flex gap-6" aria-label="Enlaces legales">
+        {footerLinks.legal.map(link => (
+          <a href={link.href} class="hover:text-primary transition-colors">{link.label}</a>
+        ))}
+      </nav>
+    </div>
+  </Container>
+</footer>

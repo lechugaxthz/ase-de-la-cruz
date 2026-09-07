@@ -1,0 +1,58 @@
+---
+import Container from '../ui/Container.astro';
+
+interface Partner {
+  name: string;
+  logo: string;
+  alt?: string;
+  featured?: boolean;
+  url?: string;
+}
+
+interface Props {
+  title?: string;
+  partners: Partner[];
+  class?: string;
+}
+---
+{{
+  const { title = 'Aseguradoras que nos respaldan', partners, class: className = '' } = Astro.props;
+}}
+<section id="partners" class={`py-16 bg-primary-bg ${className}`} aria-labelledby="partners-title">
+  <Container>
+    <div class="text-center mb-12">
+      <p class="text-sm font-bold text-primary uppercase tracking-wider mb-4">{title}</p>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6 md:gap-8 items-center">
+      {partners.map((partner, index) => (
+        <div
+          class="group bg-white p-4 md:p-6 rounded-xl border border-border shadow-sm
+                 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 hover:shadow-lg
+                 transition-all duration-300 cursor-pointer animate-fade-in-up"
+          style={{ animationDelay: `${index * 100}ms` }}
+        >
+          {partner.url ? (
+            <a href={partner.url} target="_blank" rel="noopener noreferrer" class="block h-full w-full flex items-center justify-center" aria-label={`Ver ${partner.name}`}>
+              <img
+                src={partner.logo}
+                alt={partner.alt || partner.name}
+                class="max-h-12 md:max-h-16 w-auto object-contain filter group-hover:drop-shadow-md"
+                loading="lazy"
+              />
+            </a>
+          ) : (
+            <div class="flex items-center justify-center h-full w-full">
+              <img
+                src={partner.logo}
+                alt={partner.alt || partner.name}
+                class="max-h-12 md:max-h-16 w-auto object-contain filter group-hover:drop-shadow-md"
+                loading="lazy"
+              />
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  </Container>
+</section>

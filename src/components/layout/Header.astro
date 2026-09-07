@@ -1,0 +1,121 @@
+---
+import Button from '../ui/Button.astro';
+import Container from '../ui/Container.astro';
+
+const navLinks = [
+  { href: '/', label: 'Inicio' },
+  { href: '/servicios', label: 'Servicios' },
+  { href: '/nosotros', label: 'Nosotros' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/contacto', label: 'Contacto' },
+];
+---
+<header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-border transition-all duration-300">
+  <Container>
+    <nav class="flex items-center justify-between h-20" aria-label="Navegación principal">
+      <!-- Logo -->
+      <a href="/" class="text-xl font-heading font-extrabold text-dark tracking-wide flex items-center gap-1" aria-label="Ase de la Cruz - Inicio">
+        Ase de la Cruz<span class="text-primary">.</span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden lg:flex items-center gap-8">
+        {navLinks.map(link => (
+          <a
+            href={link.href}
+            class="text-sm font-medium text-dark-light hover:text-primary transition-colors relative after:absolute after:bottom-[-4px] after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-width hover:after:w-full"
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
+
+      <!-- CTA Buttons -->
+      <div class="hidden lg:flex items-center gap-3">
+        <Button variant="ghost" size="sm" href="/contacto">
+          Hablar con un asesor
+        </Button>
+        <Button variant="primary" size="sm" href="/contacto" icon="arrow_forward">
+          Solicitar Asesoría
+        </Button>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button
+        class="lg:hidden p-2 text-dark-light hover:text-primary transition-colors"
+        aria-label="Abrir menú"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        data-menu-toggle
+      >
+        <span class="material-symbols-outlined text-2xl" data-menu-icon>menu</span>
+      </button>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="lg:hidden overflow-hidden max-h-0 opacity-0 transition-all duration-300 ease-out bg-white border-t border-border" data-menu-panel>
+      <div class="py-6 space-y-4 px-2">
+        {navLinks.map(link => (
+          <a
+            href={link.href}
+            class="block px-4 py-3 text-base font-medium text-dark-light hover:text-primary hover:bg-primary-bg rounded-lg transition-all"
+            data-menu-link
+          >
+            {link.label}
+          </a>
+        ))}
+        <div class="pt-4 border-t border-border flex flex-col gap-3">
+          <Button variant="outline" fullWidth href="/contacto" class="w-full">
+            Hablar con un asesor
+          </Button>
+          <Button variant="primary" fullWidth href="/contacto" icon="arrow_forward" class="w-full">
+            Solicitar Asesoría
+          </Button>
+        </div>
+      </div>
+    </div>
+  </Container>
+</header>
+
+<script>
+  const toggle = document.querySelector('[data-menu-toggle]');
+  const panel = document.querySelector('[data-menu-panel]');
+  const icon = document.querySelector('[data-menu-icon]');
+  const links = document.querySelectorAll('[data-menu-link]');
+
+  if (toggle && panel && icon) {
+    toggle.addEventListener('click', () => {
+      const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!isOpen));
+
+      if (!isOpen) {
+        panel.style.maxHeight = panel.scrollHeight + 'px';
+        panel.style.opacity = '1';
+        icon.textContent = 'close';
+      } else {
+        panel.style.maxHeight = '0';
+        panel.style.opacity = '0';
+        icon.textContent = 'menu';
+      }
+    });
+
+    links.forEach(link => {
+      link.addEventListener('click', () => {
+        toggle.setAttribute('aria-expanded', 'false');
+        panel.style.maxHeight = '0';
+        panel.style.opacity = '0';
+        icon.textContent = 'menu';
+      });
+    });
+
+    // Close on escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        toggle.setAttribute('aria-expanded', 'false');
+        panel.style.maxHeight = '0';
+        panel.style.opacity = '0';
+        icon.textContent = 'menu';
+      }
+    });
+  }
+</script>

@@ -1,0 +1,162 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import Container from '../components/ui/Container.astro';
+import Button from '../components/ui/Button.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  publishedTime?: string;
+  modifiedTime?: string;
+  author?: string;
+  category?: string;
+  tags?: string[];
+  readingTime?: string;
+}
+---
+{{
+  const { title, description, image, publishedTime, modifiedTime, author, category, tags = [], readingTime } = Astro.props;
+}}
+<BaseLayout
+  title={title}
+  description={description}
+  image={image}
+  type="article"
+  publishedTime={publishedTime}
+  modifiedTime={modifiedTime}
+  author={author}
+  section={category}
+  tags={tags}
+>
+  <Header />
+  <main id="main-content" class="min-h-screen pt-20">
+    <article class="py-16 lg:py-24">
+      <Container size="md">
+        <!-- Article Header -->
+        <header class="mb-12 text-center max-w-3xl mx-auto">
+          {category && (
+            <span class="inline-block bg-primary-light text-primary px-3 py-1 rounded-full text-sm font-medium mb-4">
+              {category}
+            </span>
+          )}
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-dark mb-6 leading-tight">
+            {title}
+          </h1>
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4 text-muted text-sm mb-6">
+            {author && <span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">person</span>{author}</span>}
+            {publishedTime && <time class="flex items-center gap-1" dateTime={publishedTime}><span class="material-symbols-outlined text-base">schedule</span>{new Date(publishedTime).toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' })}</time>}
+            {modifiedTime && <time class="flex items-center gap-1" dateTime={modifiedTime}><span class="material-symbols-outlined text-base">update</span>Actualizado: {new Date(modifiedTime).toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' })}</time>}
+            {readingTime && <span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">timer</span>{readingTime} min lectura</span>}
+          </div>
+          {tags.length > 0 && (
+            <div class="flex flex-wrap justify-center gap-2 mt-4" role="list" aria-label="Etiquetas">
+              {tags.map(tag => (
+                <span key={tag} class="bg-surface-alt text-muted px-3 py-1 rounded-full text-sm" role="listitem">#{tag}</span>
+              ))}
+            </div>
+          )}
+        </header>
+
+        <!-- Hero Image -->
+        {image && (
+          <div class="mb-12 rounded-2xl overflow-hidden shadow-lg">
+            <img src={image} alt="" class="w-full h-auto" loading="eager" fetchpriority="high" />
+          </div>
+        )}
+
+        <!-- Article Content -->
+        <div class="prose-custom max-w-none" set:html={Astro.props.content} />
+
+        <!-- Author Box -->
+        {author && (
+          <div class="mt-16 pt-8 border-t border-border flex gap-4">
+            <div class="w-16 h-16 rounded-full bg-primary-light flex items-center justify-center flex-shrink-0">
+              <span class="material-symbols-outlined text-primary text-2xl">person</span>
+            </div>
+            <div>
+              <h3 class="font-bold text-dark">Escrito por {author}</h3>
+              <p class="text-muted text-sm mt-1">Asesor especializado en Ase de la Cruz</p>
+              <div class="flex gap-3 mt-3">
+                <Button variant="outline" size="sm" href="/contacto">Contactar</Button>
+                <Button variant="ghost" size="sm" href="/nosotros">Ver perfil</Button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <!-- Share Buttons -->
+        <div class="mt-12 pt-8 border-t border-border">
+          <p class="text-sm font-medium text-dark-light mb-4">Compartir esta nota</p>
+          <div class="flex gap-3" role="list" aria-label="Compartir en redes">
+            <button
+              class="w-10 h-10 rounded-full bg-green-100 text-green-700 flex items-center justify-center hover:bg-green-200 transition-colors"
+              aria-label="Compartir en WhatsApp"
+              data-share-whatsapp
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.263.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004c-1.453 0-2.906-.54-3.947-1.453-.94-.814-1.653-1.825-1.785-2.082-.149-.265-.272-.52-.42-.57-.149-.05-.347-.05-.52-.05-.182 0-.488.05-.67.199-.2.134-.879.62-1.059.746-.173.124-.347.273-.497.399-.149.124-.198.185-.298.185-.106 0-.198-.05-.272-.149-.074-.092-.005-.2-.005-.422 0-.213.13-.457.406-.695.124-.105.252-.207.372-.301.149-.099.21-.154.406-.318.248-.207.555-.528.747-.728.476-.502.555-.799.709-.951.149-.149.21-.198.298-.198.217 0 1.213 1.719 1.248 1.786.033.067.543.606 1.108 1.31.496.6.84 1.113 1.072 1.462.118.173.173.301.173.458 0 .182-.133.272-.487.272-.192 0-.355-.012-.51-.05-.16-.042-.32-.11-.457-.153z"/></svg>
+            </button>
+            <button
+              class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center hover:bg-blue-200 transition-colors"
+              aria-label="Compartir en LinkedIn"
+              data-share-linkedin
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </button>
+            <button
+              class="w-10 h-10 rounded-full bg-sky-100 text-sky-700 flex items-center justify-center hover:bg-sky-200 transition-colors"
+              aria-label="Compartir en Twitter"
+              data-share-twitter
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
+            </button>
+            <button
+              class="w-10 h-10 rounded-full bg-surface-alt text-muted flex items-center justify-center hover:bg-border transition-colors"
+              aria-label="Copiar enlace"
+              data-share-copy
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Back to Blog -->
+        <div class="mt-12">
+          <Button variant="outline" href="/blog" icon="arrow_back" iconPosition="left">
+            Volver al Blog
+          </Button>
+        </div>
+      </Container>
+    </article>
+  </main>
+  <Footer />
+
+  <script>
+    // Share functionality
+    const url = window.location.href;
+    const title = document.title;
+
+    document.querySelector('[data-share-whatsapp]')?.addEventListener('click', () => {
+      window.open(`https://wa.me/?text=${encodeURIComponent(title + ' ' + url)}`, '_blank');
+    });
+
+    document.querySelector('[data-share-linkedin]')?.addEventListener('click', () => {
+      window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+    });
+
+    document.querySelector('[data-share-twitter]')?.addEventListener('click', () => {
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`, '_blank');
+    });
+
+    document.querySelector('[data-share-copy]')?.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(url);
+      const btn = document.querySelector('[data-share-copy]');
+      const original = btn.innerHTML;
+      btn.innerHTML = '<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>';
+      btn.classList.add('text-success');
+      setTimeout(() => { btn.innerHTML = original; btn.classList.remove('text-success'); }, 2000);
+    });
+  </script>
+</BaseLayout>

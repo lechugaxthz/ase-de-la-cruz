@@ -1,0 +1,243 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import Hero from '../../components/sections/Hero.astro';
+import CTA from '../../components/sections/CTA.astro';
+import Card from '../../components/ui/Card.astro';
+import Badge from '../../components/ui/Badge.astro';
+import Container from '../../components/ui/Container.astro';
+import { getCollection, getEntryBySlug } from 'astro:content';
+
+const equipo = await getCollection('equipo');
+const historia = await getEntryBySlug('nosotros', 'historia');
+const valores = await getEntryBySlug('nosotros', 'valores');
+---
+
+<PageLayout
+  title="Nosotros - Ase de la Cruz"
+  description="Conocé al equipo de Ase de la Cruz. Más de 20 años protegiendo patrimonios con asesoramiento experto e integral en seguros."
+  image="/images/og-nosotros.jpg"
+>
+  <!-- Hero -->
+  <Hero
+    badge="Quiénes Somos"
+    title="Más de 20 años protegiendo lo que más valorás"
+    subtitle="Somos un equipo de asesores especializados que pone tus intereses primero. Conocé nuestra historia, valores y las personas detrás de cada póliza."
+    primaryCTA={{ label: 'Conocer al equipo', href: '#equipo', icon: 'arrow_forward' }}
+    secondaryCTA={{ label: 'Nuestra historia', href: '#historia', icon: 'article' }}
+    minHeight="min-h-[60vh]"
+  />
+
+  <!-- Historia -->
+  <section id="historia" class="py-16 sm:py-24 bg-surface" aria-labelledby="historia-title">
+    <Container>
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div>
+          <div class="inline-block bg-primary-light text-primary px-4 py-1.5 rounded-full text-sm font-bold mb-4">
+            Nuestra Historia
+          </div>
+          <h2 id="historia-title" class="text-3xl sm:text-4xl font-heading font-extrabold text-dark mb-6">
+            {historia?.data.title || 'Nuestra Historia'}
+          </h2>
+          <div class="prose-custom text-muted leading-relaxed" set:html={historia?.rendered?.html || ''}>
+            <p>Fundada en 2004 en Pilar, Buenos Aires, Ase de la Cruz nace con una misión clara: brindar asesoramiento experto e integral en seguros, poniendo siempre los intereses de nuestros clientes por encima de cualquier comisión.</p>
+            <p>Hoy, más de 20 años después, seguimos fieles a ese principio. Hemos crecido, nos hemos especializado y hemos incorporado tecnología, pero nuestra esencia sigue intacta: <strong>tu tranquilidad es nuestro único objetivo.</strong></p>
+          </div>
+          <ul class="mt-8 space-y-4" role="list">
+            <li class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined text-primary">check_circle</span>
+              </div>
+              <div>
+                <p class="font-medium text-dark">5.000+ clientes confían en nosotros</p>
+                <p class="text-sm text-muted">Familias y empresas en toda Argentina</p>
+              </div>
+            </li>
+            <li class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined text-primary">check_circle</span>
+              </div>
+              <div>
+                <p class="font-medium text-dark">Alianzas con 10+ aseguradoras líderes</p>
+                <p class="text-sm text-muted">Sancor, Zurich, MetLife, San Cristóbal, Chubb, Allianz y más</p>
+              </div>
+            </li>
+            <li class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined text-primary">check_circle</span>
+              </div>
+              <div>
+                <p class="font-medium text-dark">Especialización por ramo</p>
+                <p class="text-sm text-muted">Cada asesor es experto en su área: vida, patrimoniales, ART, empresas</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="relative">
+          <div class="aspect-video rounded-2xl overflow-hidden shadow-xl bg-primary/10">
+            <img
+              src="/images/nosotros-oficina.jpg"
+              alt="Oficinas de Ase de la Cruz"
+              class="w-full h-full object-cover"
+              loading="lazy"
+            />
+          </div>
+          <div class="absolute -bottom-6 -left-6 bg-white p-6 rounded-2xl shadow-xl max-w-xs">
+            <p class="text-sm font-bold text-primary uppercase tracking-wider">2004 - 2024</p>
+            <p class="text-3xl font-heading font-extrabold text-dark mt-1">20 Años</p>
+            <p class="text-muted mt-2">Protegiendo patrimonios</p>
+          </div>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <!-- Valores -->
+  <section id="valores" class="py-16 sm:py-24" aria-labelledby="valores-title">
+    <Container>
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <div class="inline-block bg-primary-light text-primary px-4 py-1.5 rounded-full text-sm font-bold mb-4">
+          Nuestros Valores
+        </div>
+        <h2 id="valores-title" class="text-3xl sm:text-4xl font-heading font-extrabold text-dark mb-4">
+          Principios que guían cada decisión
+        </h2>
+        <p class="text-muted text-lg leading-relaxed">
+          No son solo palabras en una pared. Son la forma en que trabajamos día a día.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <Card variant="interactive" padding="md" hover class="text-center">
+          <div class="w-14 h-14 rounded-2xl bg-primary-light flex items-center justify-center mx-auto mb-4">
+            <span class="material-symbols-outlined text-3xl text-primary">favorite</span>
+          </div>
+          <h3 class="text-xl font-heading font-bold text-dark mb-2">Lealtad al Cliente</h3>
+          <p class="text-muted text-sm">Tu interés es nuestro único interés. No trabajamos para las aseguradoras, trabajamos para vos.</p>
+        </Card>
+
+        <Card variant="interactive" padding="md" hover class="text-center">
+          <div class="w-14 h-14 rounded-2xl bg-primary-light flex items-center justify-center mx-auto mb-4">
+            <span class="material-symbols-outlined text-3xl text-primary">target</span>
+          </div>
+          <h3 class="text-xl font-heading font-bold text-dark mb-2">Especialización Real</h3>
+          <p class="text-muted text-sm">Cada asesor es experto en su ramo. Cuando consultás, te atiende un especialista.</p>
+        </Card>
+
+        <Card variant="interactive" padding="md" hover class="text-center">
+          <div class="w-14 h-14 rounded-2xl bg-primary-light flex items-center justify-center mx-auto mb-4">
+            <span class="material-symbols-outlined text-3xl text-primary">shield</span>
+          </div>
+          <h3 class="text-xl font-heading font-bold text-dark mb-2">Defensa Activa</h3>
+          <p class="text-muted text-sm">El verdadero test es el siniestro. Gestionamos, negociamos y defendemos tu reclamo.</p>
+        </Card>
+
+        <Card variant="interactive" padding="md" hover class="text-center">
+          <div class="w-14 h-14 rounded-2xl bg-primary-light flex items-center justify-center mx-auto mb-4">
+            <span class="material-symbols-outlined text-3xl text-primary">visibility</span>
+          </div>
+          <h3 class="text-xl font-heading font-bold text-dark mb-2">Transparencia Total</h3>
+          <p class="text-muted text-sm">Te explicamos qué cubre, qué no, cuánto cuesta y por qué. Sin letra chica oculta.</p>
+        </Card>
+      </div>
+    </Container>
+  </section>
+
+  <!-- Equipo -->
+  <section id="equipo" class="py-16 sm:py-24 bg-surface" aria-labelledby="equipo-title">
+    <Container>
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <div class="inline-block bg-primary-light text-primary px-4 py-1.5 rounded-full text-sm font-bold mb-4">
+          Nuestro Equipo
+        </div>
+        <h2 id="equipo-title" class="text-3xl sm:text-4xl font-heading font-extrabold text-dark mb-4">
+          Las personas detrás de cada asesoría
+        </h2>
+        <p class="text-muted text-lg leading-relaxed">
+          Profesionales especializados, apasionados por proteger tu patrimonio
+        </p>
+      </div>
+
+      {equipo.length > 0 && equipo.some(m => m.name) ? (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {equipo.filter(m => m.name).map((member, index) => (
+            <article class="bg-white rounded-2xl shadow-sm border border-border overflow-hidden animate-in" style={{ animationDelay: `${index * 100}ms` }}>
+              <div class="aspect-square bg-primary/10 relative overflow-hidden">
+                {member.image ? (
+                  <img src={member.image} alt={member.name} class="w-full h-full object-cover" loading="lazy" />
+                ) : (
+                  <div class="w-full h-full flex items-center justify-center">
+                    <span class="material-symbols-outlined text-primary/30 text-6xl">person</span>
+                  </div>
+                )}
+                {member.badge && (
+                  <div class="absolute top-3 right-3">
+                    <Badge variant="primary" size="sm">{member.badge}</Badge>
+                  </div>
+                )}
+              </div>
+              <div class="p-6 text-center">
+                <h3 class="text-lg font-heading font-bold text-dark mb-1">{member.name}</h3>
+                <p class="text-primary text-sm font-medium mb-3">{member.role}</p>
+                {member.bio && <p class="text-muted text-sm mb-4 line-clamp-3">{member.bio}</p>}
+                <div class="flex items-center justify-center gap-3">
+                  {member.linkedin && (
+                    <a href={member.linkedin} target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-full bg-surface-alt flex items-center justify-center hover:bg-primary hover:text-white transition-colors" aria-label={`LinkedIn de ${member.name}`}>
+                      <span class="material-symbols-outlined text-base">business</span>
+                    </a>
+                  )}
+                  {member.email && (
+                    <a href={`mailto:${member.email}`} class="w-9 h-9 rounded-full bg-surface-alt flex items-center justify-center hover:bg-primary hover:text-white transition-colors" aria-label={`Email de ${member.name}`}>
+                      <span class="material-symbols-outlined text-base">mail</span>
+                    </a>
+                  )}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-12">
+          <div class="w-20 h-20 rounded-full bg-primary-light flex items-center justify-center mx-auto mb-6">
+            <span class="material-symbols-outlined text-primary text-4xl">group</span>
+          </div>
+          <h3 class="text-xl font-heading font-bold text-dark mb-2">Equipo en construcción</h3>
+          <p class="text-muted mb-6 max-w-md mx-auto">
+            Estamos completando los perfiles de nuestro equipo. Próximamente podrás conocer a cada asesor, su especialidad y trayectoria.
+          </p>
+<p class="text-sm text-muted">
+              Edita <code class="bg-surface px-1 rounded">src/content/equipo/equipo.json</code> para agregar los datos
+            </p>
+        </div>
+      )}
+    </Container>
+  </section>
+
+  <!-- Certificaciones / Alianzas -->
+  <section class="py-16 bg-primary-bg" aria-labelledby="alianzas-title">
+    <Container>
+      <div class="text-center mb-12">
+        <h2 id="alianzas-title" class="text-3xl sm:text-4xl font-heading font-extrabold text-dark mb-4">
+          Alianzas y Certificaciones
+        </h2>
+        <p class="text-muted text-lg">Trabajamos con las compañías más sólidas y confiables del mercado</p>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 items-center opacity-60 hover:opacity-100 transition-opacity">
+        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=80&fit=crop" alt="Sancor Seguros" class="mx-auto h-12 object-contain grayscale" loading="lazy" />
+        <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=150&h=80&fit=crop" alt="San Cristóbal" class="mx-auto h-12 object-contain grayscale" loading="lazy" />
+        <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=150&h=80&fit=crop" alt="Zurich" class="mx-auto h-12 object-contain grayscale" loading="lazy" />
+        <img src="https://images.unsplash.com/photo-1559526324-593bc073d938?w=150&h=80&fit=crop" alt="MetLife" class="mx-auto h-12 object-contain grayscale" loading="lazy" />
+        <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=150&h=80&fit=crop" alt="Provincia ART" class="mx-auto h-12 object-contain grayscale" loading="lazy" />
+      </div>
+    </Container>
+  </section>
+
+  <!-- CTA -->
+  <CTA
+    title="¿Querés conocernos mejor?"
+    subtitle="Agendá una charla sin compromiso. Te contamos cómo podemos ayudarte a proteger lo que más valorás."
+    primaryCTA={{ label: 'Agendar llamada', href: '/contacto', icon: 'arrow_forward' }}
+    secondaryCTA={{ label: 'Escribirnos por WhatsApp', href: 'https://wa.me/5491141769566', icon: 'chat' }}
+    background="primary"
+  />
+</PageLayout>

@@ -1,0 +1,13 @@
+name = "umami-asedelacruz"
+main = "src/index.ts"
+compatibility_date = "2024-12-01"
+
+[vars]
+DATABASE_URL = "postgresql://..."
+HASH_SALT = "generate-with-openssl-rand-base64-32"
+
+[env.production]
+vars = { ENVIRONMENT = "production" }
+
+# Deploy: wrangler deploy --env production
+# Then add script to BaseLayout: <script defer src="https://analytics.tudominio.com/script.js" data-website-id="..."></script>

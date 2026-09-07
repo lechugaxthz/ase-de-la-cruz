@@ -1,0 +1,46 @@
+---
+interface Props {
+  children: any;
+  variant?: 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'outline';
+  size?: 'sm' | 'md';
+  class?: string;
+  dot?: boolean;
+}
+---
+{{
+  const { children, variant = 'default', size = 'md', class: className = '', dot = false } = Astro.props;
+
+  const variantClasses = {
+    default: 'bg-surface-alt text-muted',
+    primary: 'bg-primary-light text-primary',
+    success: 'bg-success-bg text-success',
+    warning: 'bg-amber-50 text-amber-700',
+    danger: 'bg-error-bg text-error',
+    outline: 'bg-transparent border border-border text-muted',
+  };
+
+  const sizeClasses = {
+    sm: 'px-2 py-0.5 text-xs gap-1',
+    md: 'px-3 py-1 text-sm gap-1.5',
+  };
+
+  const dotColors = {
+    default: 'bg-muted',
+    primary: 'bg-primary',
+    success: 'bg-success',
+    warning: 'bg-amber-500',
+    danger: 'bg-error',
+    outline: 'bg-muted',
+  };
+
+  const classList = [
+    'inline-flex items-center font-medium rounded-full',
+    variantClasses[variant],
+    sizeClasses[size],
+    className
+  ].join(' ');
+}}
+<span class={classList}>
+  {dot && <span class={`w-1.5 h-1.5 rounded-full ${dotColors[variant]}`} aria-hidden="true"></span>}
+  <slot />
+</span>

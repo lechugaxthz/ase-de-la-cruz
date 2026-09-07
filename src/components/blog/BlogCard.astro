@@ -1,0 +1,116 @@
+---
+import Button from '../ui/Button.astro';
+import Badge from '../ui/Badge.astro';
+import Container from '../ui/Container.astro';
+
+interface BlogPost {
+  id: string;
+  slug: string;
+  data: {
+    title: string;
+    description: string;
+    pubDate: Date;
+    updatedDate?: Date;
+    heroImage?: string;
+    category: string;
+    tags: string[];
+    author: string;
+    draft: boolean;
+  };
+}
+
+interface Props {
+  post: BlogPost;
+  variant?: 'default' | 'featured' | 'compact';
+  class?: string;
+}
+---
+{{
+  const { post, variant = 'default', class: className = '' } = Astro.props;
+  const { data } = post;
+
+  const formattedDate = data.pubDate.toLocaleDateString('es-AR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+
+  const readingTime = Math.ceil(data.description.length / 200);
+}}
+<article class={`group ${variant === 'featured' ? 'grid lg:grid-cols-2 gap-8' : ''} ${className}`}>
+  {data.heroImage && (
+    <div class={`relative aspect-video rounded-2xl overflow-hidden ${variant === 'featured' ? 'lg:aspect-auto lg:h-full' : ''}`}>
+      <img
+        src={data.heroImage}
+        alt=""
+        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        loading={variant === 'featured' ? 'eager' : 'lazy'}
+        fetchpriority={variant === 'featured' ? 'high' : 'auto'}
+      />
+      <div class="absolute top-4 left-4 flex gap-2">
+        <Badge variant="primary" size="sm">{data.category}</Badge>
+        {data.draft && <Badge variant="warning" size="sm">Borrador</Badge>}
+      </div>
+    </div>
+  )}
+
+  <div class={`p-6 bg-white rounded-2xl shadow-sm border border-border hover:shadow-lg transition-shadow duration-300 ${variant === 'featured' ? 'flex flex-col justify-between' : ''}`}>
+    <div>
+      <div class="flex flex-wrap items-center gap-2 mb-3">
+        <time class="text-sm text-muted" dateTime={data.pubDate.toISOString()}>
+          <span class="material-symbols-outlined text-base align-middle mr-1">schedule</span>
+          {formattedDate}
+        </time>
+        {data.updatedDate && (
+          <time class="text-sm text-muted" dateTime={data.updatedDate.toISOString()}>
+            <span class="material-symbols-outlined text-base align-middle mr-1">update</span>
+            Actualizado
+          </time>
+        )}
+        <span class="text-sm text-muted ml-auto">
+          <span class="material-symbols-outlined text-base align-middle mr-1">timer</span>
+          {readingTime} min
+        </span>
+      </div>
+
+      <h2 class={`font-heading font-bold text-dark mb-3 ${variant === 'featured' ? 'text-2xl lg:text-3xl' : 'text-xl'}`}>
+        <a href={`/blog/${post.slug}`} class="hover:text-primary transition-colors">
+          {data.title}
+        </a>
+      </h2>
+
+      <p class="text-muted leading-relaxed mb-6 line-clamp-3">
+        {data.description}
+      </p>
+
+      {data.tags.length > 0 && (
+        <div class="flex flex-wrap gap-2 mb-4" role="list" aria-label="Etiquetas">
+          {data.tags.slice(0, 3).map(tag => (
+            <span key={tag} class="text-xs text-muted px-2 py-1 rounded bg-surface-alt" role="listitem">#{tag}</span>
+          ))}
+          {data.tags.length > 3 && (
+            <span class="text-xs text-muted px-2 py-1 rounded bg-surface-alt">+{data.tags.length - 3}</span>
+          )}
+        </div>
+      )}
+    </div>
+
+    <div class="flex items-center justify-between pt-4 border-t border-border mt-4">
+      <div class="flex items-center gap-2">
+        {data.author && (
+          <>
+            {data.author && (
+              <div class="w-8 h-8 rounded-full bg-primary-light flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined text-primary text-sm">person</span>
+              </div>
+            )}
+            <span class="text-sm font-medium text-dark-light hidden sm:block">{data.author}</span>
+          </>
+        )}
+      </div>
+      <Button variant="ghost" size="sm" href={`/blog/${post.slug}`} icon="arrow_forward" iconPosition="right">
+        Leer más
+      </Button>
+    </div>
+  </div>
+</article>

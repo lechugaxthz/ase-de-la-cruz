@@ -1,0 +1,172 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import Hero from '../../components/sections/Hero.astro';
+import ContactForm from '../../components/forms/ContactForm.tsx';
+import Card from '../../components/ui/Card.astro';
+import Container from '../../components/ui/Container.astro';
+import { CONTACT, INTEREST_OPTIONS } from '../../lib/constants';
+import { getCollection } from 'astro:content';
+
+const servicios = await getCollection('servicios');
+const serviceMap = Object.fromEntries(servicios.map(s => [s.data.category, s.data.title]));
+---
+
+<PageLayout
+  title="Contacto - Ase de la Cruz"
+  description="Solicitá tu asesoría personalizada. Completá el formulario y uno de nuestros expertos se contactará contigo en menos de 24hs."
+  image="/images/og-contacto.jpg"
+>
+  <!-- Hero -->
+  <Hero
+    badge="Contacto"
+    title="Hablemos de tu tranquilidad"
+    subtitle="Completá el formulario y un asesor especializado se comunicará contigo para diseñar la cobertura que necesitás."
+    primaryCTA={{ label: 'Ir al formulario', href: '#formulario', icon: 'arrow_forward' }}
+    minHeight="min-h-[50vh]"
+  />
+
+  <section id="contacto" class="py-16 sm:py-24" aria-labelledby="contacto-title">
+    <Container>
+      <div class="grid lg:grid-cols-3 gap-8 lg:gap-12">
+        <!-- Info Column -->
+        <div class="lg:col-span-1 space-y-8">
+          <div class="bg-primary p-8 rounded-2xl text-white">
+            <h2 id="contacto-title" class="text-2xl sm:text-3xl font-heading font-extrabold mb-6">
+              Canales Directos
+            </h2>
+            <p class="text-white/80 mb-8">La forma más rápida de contactarnos</p>
+
+            <!-- WhatsApp Buttons -->
+            <div class="space-y-3">
+              {CONTACT.phones.map((phone, index) => (
+                <a
+                  href={`https://wa.me/${phone.whatsapp}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center gap-4 p-4 bg-white/10 rounded-xl hover:bg-white/20 transition-colors group"
+                >
+                  <div class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.263.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004c-1.453 0-2.906-.54-3.947-1.453-.94-.814-1.653-1.825-1.785-2.082-.149-.265-.272-.52-.42-.57-.149-.05-.347-.05-.52-.05-.182 0-.488.05-.67.199-.2.134-.879.62-1.059.746-.173.124-.347.273-.497.399-.149.124-.198.185-.298.185-.106 0-.198-.05-.272-.149-.074-.092-.005-.2-.005-.422 0-.213.13-.457.406-.695.124-.105.252-.207.372-.301.149-.099.21-.154.406-.318.248-.207.555-.528.747-.728.476-.502.555-.799.709-.951.149-.149.21-.198.298-.198.217 0 1.213 1.719 1.248 1.786.033.067.543.606 1.108 1.31.496.6.84 1.113 1.072 1.462.118.173.173.301.173.458 0 .182-.133.272-.487.272-.192 0-.355-.012-.51-.05-.16-.042-.32-.11-.457-.153z"/></svg>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-white font-medium truncate">{phone.number}</p>
+                    <p class="text-white/70 text-sm">{phone.label}</p>
+                  </div>
+                  <span class="material-symbols-outlined text-white/50 group-hover:text-white transition-colors">open_in_new</span>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <!-- Emails -->
+          <Card variant="bordered" padding="md">
+            <h3 class="font-bold text-dark mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary">mail</span>
+              Correo Electrónico
+            </h3>
+            <ul class="space-y-2" role="list">
+              {CONTACT.emails.map(email => (
+                <li>
+                  <a href={`mailto:${email}`} class="flex items-center gap-2 text-muted hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined text-base text-primary">mail</span>
+                    <span class="text-sm">{email}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </Card>
+
+          <!-- Address & Hours -->
+          <Card variant="bordered" padding="md">
+            <div class="grid gap-6 sm:grid-cols-2">
+              <div>
+                <h3 class="font-bold text-dark mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-primary">location_on</span>
+                  Ubicación
+                </h3>
+                <address class="text-muted not-italic leading-relaxed">
+                  {CONTACT.address}
+                </address>
+              </div>
+              <div>
+                <h3 class="font-bold text-dark mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-primary">schedule</span>
+                  Horarios
+                </h3>
+                <p class="text-muted">{CONTACT.hours}</p>
+              </div>
+            </div>
+          </Card>
+
+          <!-- Quick Service Links -->
+          <Card variant="bordered" padding="md">
+            <h3 class="font-bold text-dark mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary">flash_on</span>
+              Cotización Rápida
+            </h3>
+            <p class="text-muted text-sm mb-4">Seleccioná tu interés y te redirigimos al formulario con la opción preseleccionada</p>
+            <div class="grid grid-cols-2 gap-2">
+              {INTEREST_OPTIONS.slice(0, 4).map(opt => (
+                <a
+                  href={`/contacto?interes=${opt.value}`}
+                  class="p-3 rounded-lg bg-surface-alt hover:bg-primary/10 border border-border hover:border-primary transition-all text-center"
+                >
+                  <span class="material-symbols-outlined text-primary text-lg mb-1 block">{opt.icon}</span>
+                  <span class="text-sm font-medium text-dark">{opt.label.split(' ')[0]}</span>
+                </a>
+              ))}
+            </div>
+          </Card>
+        </div>
+
+        <!-- Form Column -->
+        <div class="lg:col-span-2">
+          <Card variant="elevated" padding="lg" id="formulario">
+            <h2 class="text-2xl font-heading font-bold text-dark mb-2">Solicitar Asesoría</h2>
+            <p class="text-muted mb-8">Completá tus datos y te contactamos en menos de 24hs hábiles</p>
+
+            <ContactForm client:load />
+          </Card>
+
+          <!-- Trust Signals -->
+          <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+            <div class="p-4">
+              <div class="text-3xl font-extrabold text-primary">24hs</div>
+              <div class="text-sm text-muted">Respuesta garantizada</div>
+            </div>
+            <div class="p-4">
+              <div class="text-3xl font-extrabold text-primary">100%</div>
+              <div class="text-sm text-muted">Gratis y sin compromiso</div>
+            </div>
+            <div class="p-4">
+              <div class="text-3xl font-extrabold text-primary">20+</div>
+              <div class="text-sm text-muted">Años de experiencia</div>
+            </div>
+            <div class="p-4">
+              <div class="text-3xl font-extrabold text-primary">5000+</div>
+              <div class="text-sm text-muted">Clientes satisfechos</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <!-- Map Placeholder -->
+  <section class="py-16 bg-surface" aria-label="Mapa de ubicación">
+    <Container>
+      <div class="aspect-video rounded-2xl overflow-hidden bg-primary/10 relative">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3284.5!2d-58.9!3d-34.5!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzTCsDMwJzAwLlMiIDU4wrA1NCcwMC5X!5e0!3m2!1ses!2sar!4v1234567890"
+          width="100%"
+          height="100%"
+          style={{ border: 0 }}
+          allowFullScreen=""
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          title="Ubicación de Ase de la Cruz - Pilar, Buenos Aires"
+        ></iframe>
+      </div>
+    </Container>
+  </section>
+</PageLayout>

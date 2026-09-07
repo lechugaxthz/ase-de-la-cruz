@@ -1,0 +1,161 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import Hero from '../../components/sections/Hero.astro';
+import BlogCard from '../../components/blog/BlogCard.astro';
+import Container from '../../components/ui/Container.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+  .filter(post => !post.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const categories = [...new Set(posts.map(p => p.data.category))].sort();
+---
+
+<PageLayout
+  title="Blog - Ase de la Cruz"
+  description="Artículos, guías y consejos sobre seguros, planificación patrimonial y protección financiera. Escritos por nuestros asesores expertos."
+  image="/images/og-blog.jpg"
+>
+  <!-- Hero -->
+  <Hero
+    badge="Blog"
+    title="Conocimiento para proteger mejor"
+    subtitle="Artículos, guías y consejos de nuestros asesores para que tomes decisiones informadas sobre tus seguros."
+    primaryCTA={{ label: 'Suscribirse al newsletter', href: '/contacto?interes=otros', icon: 'mail' }}
+    minHeight="min-h-[50vh]"
+  />
+
+  <!-- Blog Content -->
+  <section class="py-16 sm:py-24" aria-labelledby="blog-title">
+    <Container>
+      <div class="mb-12">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-8">
+          <div>
+            <h2 id="blog-title" class="text-3xl sm:text-4xl font-heading font-extrabold text-dark mb-2">
+              Últimos Artículos
+            </h2>
+            <p class="text-muted">{posts.length} artículos publicados</p>
+          </div>
+
+          <!-- Category Filter -->
+          <div class="flex flex-wrap gap-2" role="group" aria-label="Filtrar por categoría">
+            <button
+              class="filter-btn px-4 py-2 rounded-full text-sm font-bold transition-all border-2 bg-primary border-primary text-white"
+              data-category="all"
+              aria-pressed="true"
+            >
+              Todas
+            </button>
+            {categories.map(cat => (
+              <button
+                class="filter-btn px-4 py-2 rounded-full text-sm font-bold transition-all border-2 bg-transparent border-primary/20 text-primary hover:border-primary"
+                data-category={cat.toLowerCase()}
+                aria-pressed="false"
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- Featured Post (Latest) -->
+      {posts.length > 0 && (
+        <article class="mb-16 animate-in" data-category={posts[0].data.category.toLowerCase()}>
+          <BlogCard post={posts[0]} variant="featured" />
+        </article>
+      )}
+
+      <!-- Posts Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" role="list" aria-label="Artículos del blog" data-posts-grid>
+        {posts.slice(1).map((post, index) => (
+          <div class="animate-in" style={{ animationDelay: `${(index + 1) * 100}ms` }} data-category={post.data.category.toLowerCase()} role="listitem">
+            <BlogCard post={post} variant="default" />
+          </div>
+        ))}
+      </div>
+
+      {posts.length <= 1 && (
+        <div class="text-center py-16">
+          <div class="w-20 h-20 rounded-full bg-primary-light flex items-center justify-center mx-auto mb-6">
+            <span class="material-symbols-outlined text-primary text-4xl">article</span>
+          </div>
+          <h3 class="text-xl font-heading font-bold text-dark mb-2">Próximamente más artículos</h3>
+          <p class="text-muted max-w-md mx-auto">Estamos preparando contenido de valor. Volvé pronto para leer más.</p>
+        </div>
+      )}
+
+      <!-- Load More / Pagination -->
+      {posts.length > 7 && (
+        <div class="mt-12 text-center">
+          <button class="px-8 py-3 rounded-lg border-2 border-primary text-primary font-bold hover:bg-primary hover:text-white transition-colors">
+            Cargar más artículos
+          </button>
+        </div>
+      )}
+    </Container>
+  </section>
+
+  <!-- Newsletter CTA -->
+  <section class="py-16 bg-primary-bg" aria-labelledby="newsletter-title">
+    <Container>
+      <div class="max-w-2xl mx-auto text-center">
+        <h2 id="newsletter-title" class="text-2xl sm:text-3xl font-heading font-extrabold text-dark mb-4">
+          ¿No querés perderte nada?
+        </h2>
+        <p class="text-muted mb-8">
+          Recibí nuestros mejores artículos y novedades del sector directo en tu email. Sin spam, solo valor.
+        </p>
+        <form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" action="/contacto?interes=otros" method="GET">
+          <input
+            type="email"
+            name="email"
+            placeholder="tu@email.com"
+            required
+            class="flex-1 px-4 py-3 rounded-lg border border-border bg-white text-dark focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+          />
+          <button type="submit" class="px-6 py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary-hover transition-colors whitespace-nowrap">
+            Suscribirme
+          </button>
+        </form>
+        <p class="text-xs text-muted mt-3">Al suscribirte aceptás nuestra <a href="/privacidad" class="underline hover:text-primary">Política de Privacidad</a>.</p>
+      </div>
+    </Container>
+  </section>
+
+  <script>
+    // Category filter
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const postsGrid = document.querySelector('[data-posts-grid]');
+    const featuredPost = document.querySelector('article[data-category]');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const category = btn.dataset.category;
+
+        filterBtns.forEach(b => {
+          b.classList.remove('bg-primary', 'text-white');
+          b.classList.add('bg-transparent', 'border-primary/20', 'text-primary');
+          b.setAttribute('aria-pressed', 'false');
+        });
+        btn.classList.add('bg-primary', 'text-white');
+        btn.classList.remove('bg-transparent', 'border-primary/20', 'text-primary');
+        btn.setAttribute('aria-pressed', 'true');
+
+        const allPosts = postsGrid?.querySelectorAll('[data-category]');
+        allPosts?.forEach(post => {
+          const postCat = post.dataset.category;
+          const show = category === 'all' || postCat === category;
+          (post as HTMLElement).style.display = show ? '' : 'none';
+        });
+
+        if (featuredPost) {
+          const featuredCat = featuredPost.dataset.category;
+          const show = category === 'all' || featuredCat === category;
+          (featuredPost as HTMLElement).style.display = show ? '' : 'none';
+        }
+      });
+    });
+  </script>
+</PageLayout>
