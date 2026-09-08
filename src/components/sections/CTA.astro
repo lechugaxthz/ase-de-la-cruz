@@ -1,0 +1,58 @@
+---
+import Button from '../ui/Button.astro';
+import Container from '../ui/Container.astro';
+
+interface Props {
+  title: string;
+  subtitle?: string;
+  primaryCTA: { label: string; href: string; icon?: string };
+  secondaryCTA?: { label: string; href: string; icon?: string };
+  background?: 'primary' | 'primary-light' | 'dark' | 'white';
+  class?: string;
+}
+
+const {
+  title,
+  subtitle,
+  primaryCTA,
+  secondaryCTA,
+  background = 'primary-light',
+  class: className = '',
+} = Astro.props;
+
+const bgClasses = {
+  primary: 'bg-primary text-white',
+  'primary-light': 'bg-primary-bg text-dark',
+  dark: 'bg-dark text-white',
+  white: 'bg-white text-dark',
+};
+
+const isDarkBg = background === 'primary' || background === 'dark';
+const primaryVariant = isDarkBg ? 'outline' : 'primary';
+const secondaryVariant = isDarkBg ? 'ghost' : 'outline';
+---
+
+<section class={`py-16 sm:py-24 ${bgClasses[background]} ${className}`} aria-labelledby="cta-title">
+  <Container>
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 id="cta-title" class="text-3xl sm:text-4xl font-heading font-extrabold mb-4">
+        {title}
+      </h2>
+      {subtitle && (
+        <p class="text-lg leading-relaxed mb-8 opacity-90">
+          {subtitle}
+        </p>
+      )}
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <Button variant={primaryVariant} size="lg" href={primaryCTA.href} icon={primaryCTA.icon} iconPosition="right">
+          {primaryCTA.label}
+        </Button>
+        {secondaryCTA && (
+          <Button variant={secondaryVariant} size="lg" href={secondaryCTA.href} icon={secondaryCTA.icon} iconPosition="right">
+            {secondaryCTA.label}
+          </Button>
+        )}
+      </div>
+    </div>
+  </Container>
+</section>

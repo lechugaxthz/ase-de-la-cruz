@@ -1,0 +1,28 @@
+---
+interface Props {
+  variant?: 'primary' | 'secondary' | 'success' | 'error' | 'outline';
+  size?: 'sm' | 'md' | 'lg';
+  dot?: boolean;
+  class?: string;
+}
+const { variant = 'primary', size = 'md', dot = false, class: className = '' } = Astro.props;
+const base = 'inline-flex items-center gap-1.5 font-medium rounded-full';
+const variants = {
+  primary: 'bg-primary-light text-primary border border-primary/20',
+  secondary: 'bg-primary-bg text-dark border border-border',
+  success: 'bg-success-bg text-success border border-success/20',
+  error: 'bg-error-bg text-error border border-error/20',
+  outline: 'bg-transparent text-primary border-2 border-primary',
+};
+const sizes = {
+  sm: 'px-2.5 py-0.5 text-xs',
+  md: 'px-3 py-1 text-sm',
+  lg: 'px-4 py-1.5 text-base',
+};
+const dotEl = dot ? '<span class="w-1.5 h-1.5 rounded-full bg-current"></span>' : '';
+const classList = [base, variants[variant], sizes[size], className].join(' ');
+---
+<span class={classList}>
+  {dotEl}
+  <slot />
+</span>

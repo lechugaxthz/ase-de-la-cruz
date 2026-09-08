@@ -1,0 +1,86 @@
+---
+import Container from '../ui/Container.astro';
+import Button from '../ui/Button.astro';
+import { CONTACT } from '../../lib/constants';
+---
+<header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-border transition-all duration-300" role="banner">
+  <Container>
+    <nav class="flex items-center justify-between h-16 lg:h-20" aria-label="Navegación principal">
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-2 text-primary font-heading font-extrabold text-xl lg:text-2xl" aria-label="Ase de la Cruz - Inicio">
+        <span class="material-symbols-outlined text-3xl">shield</span>
+        <span class="hidden sm:block">Ase de la Cruz</span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden lg:flex items-center gap-8">
+        <a href="/servicios" class="text-dark-light font-medium hover:text-primary transition-colors">Servicios</a>
+        <a href="/nosotros" class="text-dark-light font-medium hover:text-primary transition-colors">Nosotros</a>
+        <a href="/blog" class="text-dark-light font-medium hover:text-primary transition-colors">Blog</a>
+        <a href="/contacto" class="text-dark-light font-medium hover:text-primary transition-colors">Contacto</a>
+      </div>
+
+      <!-- CTA Buttons -->
+      <div class="hidden lg:flex items-center gap-3">
+        <a href="tel:{CONTACT.phones[0].number}" class="flex items-center gap-1.5 text-sm font-medium text-dark-light hover:text-primary transition-colors">
+          <span class="material-symbols-outlined text-base">call</span>
+          {CONTACT.phones[0].label}
+        </a>
+        <Button variant="primary" size="sm" href={`https://wa.me/${CONTACT.phones[0].whatsapp}`} icon="chat" iconPosition="right" target="_blank" rel="noopener noreferrer">
+          WhatsApp
+        </Button>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button class="lg:hidden p-2 rounded-lg text-dark hover:bg-surface transition-colors" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+        <span class="material-symbols-outlined text-2xl">menu</span>
+      </button>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="lg:hidden overflow-hidden max-h-0 opacity-0 transition-all duration-300 ease-out border-t border-border bg-white" role="navigation" aria-label="Menú móvil">
+      <div class="py-6 space-y-4 px-2">
+        <a href="/servicios" class="block px-4 py-3 rounded-lg text-dark font-medium hover:bg-primary-light hover:text-primary transition-colors">Servicios</a>
+        <a href="/nosotros" class="block px-4 py-3 rounded-lg text-dark font-medium hover:bg-primary-light hover:text-primary transition-colors">Nosotros</a>
+        <a href="/blog" class="block px-4 py-3 rounded-lg text-dark font-medium hover:bg-primary-light hover:text-primary transition-colors">Blog</a>
+        <a href="/contacto" class="block px-4 py-3 rounded-lg text-dark font-medium hover:bg-primary-light hover:text-primary transition-colors">Contacto</a>
+        <div class="pt-4 border-t border-border space-y-3">
+          <a href="tel:{CONTACT.phones[0].number}" class="flex items-center gap-3 px-4 py-3 rounded-lg text-dark font-medium hover:bg-primary-light hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-primary">call</span>
+            {CONTACT.phones[0].label}
+          </a>
+          <Button variant="primary" fullWidth href={`https://wa.me/${CONTACT.phones[0].whatsapp}`} icon="chat" iconPosition="right" target="_blank" rel="noopener noreferrer">
+            WhatsApp
+          </Button>
+        </div>
+      </div>
+    </div>
+  </Container>
+
+  <script>
+    const toggle = document.querySelector('[data-menu-toggle]');
+    const menu = document.getElementById('mobile-menu');
+    if (toggle && menu) {
+      toggle.addEventListener('click', () => {
+        const isOpen = menu.classList.contains('max-h-96');
+        if (isOpen) {
+          menu.classList.remove('max-h-96', 'opacity-100', 'pb-6');
+          menu.classList.add('max-h-0', 'opacity-0');
+          toggle.setAttribute('aria-expanded', 'false');
+        } else {
+          menu.classList.remove('max-h-0', 'opacity-0');
+          menu.classList.add('max-h-96', 'opacity-100', 'pb-6');
+          toggle.setAttribute('aria-expanded', 'true');
+        }
+      });
+      // Close on link click
+      menu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          menu.classList.remove('max-h-96', 'opacity-100', 'pb-6');
+          menu.classList.add('max-h-0', 'opacity-0');
+          toggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+  </script>
+</header>

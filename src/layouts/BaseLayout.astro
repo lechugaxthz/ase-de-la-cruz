@@ -1,0 +1,126 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  type?: 'website' | 'article';
+  publishedTime?: string;
+  modifiedTime?: string;
+  author?: string;
+  section?: string;
+  tags?: string[];
+  noIndex?: boolean;
+  noFollow?: boolean;
+  canonicalURL?: string;
+}
+const {
+  title,
+  description,
+  image = '/images/og-default.jpg',
+  type = 'website',
+  publishedTime,
+  modifiedTime,
+  author = 'Equipo Ase de la Cruz',
+  section,
+  tags = [],
+  noIndex = false,
+  noFollow = false,
+  canonicalURL,
+} = Astro.props;
+
+const siteUrl = 'https://asedelacruz.com';
+const url = canonicalURL || Astro.url.pathname;
+const fullUrl = new URL(url, siteUrl).toString();
+const fullImage = new URL(image, siteUrl).toString();
+---
+<!DOCTYPE html>
+<html lang="es-AR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="canonical" href={fullUrl} />
+
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <meta name="author" content={author} />
+    <meta name="robots" content={`${noIndex ? 'noindex' : 'index'}, ${noFollow ? 'nofollow' : 'follow'}`} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={fullUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={fullImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="Ase de la Cruz" />
+    <meta property="og:locale" content="es_AR" />
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+    {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+    {author && <meta property="article:author" content={author} />}
+    {section && <meta property="article:section" content={section} />}
+    {tags.map(tag => <meta property="article:tag" content={tag} />)}
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={fullUrl} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={fullImage} />
+    <meta name="twitter:site" content="@asedelacruz" />
+
+    <!-- Additional SEO -->
+    <meta name="theme-color" content="#D97706" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': type === 'article' ? 'Article' : 'WebPage',
+      name: title,
+      description: description,
+      url: fullUrl,
+      image: fullImage,
+      publisher: {
+        '@type': 'Organization',
+        name: 'Ase de la Cruz',
+        logo: {
+          '@type': 'ImageObject',
+          url: new URL('/images/logo.svg', siteUrl).toString()
+        }
+      },
+      ...(type === 'article' && {
+        headline: title,
+        datePublished: publishedTime,
+        dateModified: modifiedTime || publishedTime,
+        author: {
+          '@type': 'Person',
+          name: author
+        },
+        publisher: {
+          '@type': 'Organization',
+          name: 'Ase de la Cruz'
+        }
+      })
+    }, null, 2)}></script>
+
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://api.telegram.org" />
+
+    <!-- Fonts -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" media="print" onload="this.media='all'" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=menu,close,arrow_forward,expand_more,chat,mail,business,call,shield,home,car,briefcase,heart_pulse,heart_handshake,shield_check,analytics,design_services,handshake,support_agent,favorite,domain,psychology,check_circle,format_quote,language,call,mail" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=menu,close,arrow_forward,expand_more,chat,mail,business,call,shield,home,car,briefcase,heart_pulse,heart_handshake,shield_check,analytics,design_services,handshake,support_agent,favorite,domain,psychology,check_circle,format_quote,language,call,mail" media="print" onload="this.media='all'" />
+  </head>
+  <body class="font-sans antialiased">
+    <slot />
+  </body>
+</html>

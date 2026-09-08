@@ -1,0 +1,35 @@
+---
+import Container from '../ui/Container.astro';
+
+interface Props {
+  quote: string;
+  author: string;
+  role?: string;
+  image?: string;
+  class?: string;
+}
+
+const { quote, author, role, image, class: className = '' } = Astro.props;
+---
+
+<section class={`py-16 sm:py-24 ${className}`} aria-labelledby="testimonial-title">
+  <Container>
+    <div class="max-w-4xl mx-auto">
+      <div class="bg-white rounded-2xl border border-border p-8 sm:p-12 lg:p-16 text-center relative">
+        <span class="material-symbols-outlined text-primary/20 text-6xl mb-4 block">format_quote</span>
+        <blockquote class="text-2xl sm:text-3xl lg:text-4xl font-heading font-medium text-dark leading-tight mb-8">
+          &ldquo;{quote}&rdquo;
+        </blockquote>
+        <footer class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          {image && (
+            <img src={image} alt="" class="w-16 h-16 rounded-full object-cover" />
+          )}
+          <div class="text-left">
+            <cite class="font-bold text-dark not-italic">{author}</cite>
+            {role && <p class="text-muted text-sm mt-0.5">{role}</p>}
+          </div>
+        </footer>
+      </div>
+    </div>
+  </Container>
+</section>

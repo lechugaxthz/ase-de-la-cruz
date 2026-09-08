@@ -1,0 +1,72 @@
+---
+import Container from '../ui/Container.astro';
+
+interface Step {
+  number: number;
+  title: string;
+  description: string;
+  icon: string;
+  bgColor: string;
+  iconColor: string;
+}
+
+interface Props {
+  title: string;
+  subtitle?: string;
+  steps: Step[];
+  class?: string;
+}
+
+const { title, subtitle, steps, class: className = '' } = Astro.props;
+---
+
+<section id="metodo" class={`py-16 sm:py-24 lg:py-32 ${className}`} aria-labelledby="process-title">
+  <Container>
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <h2 id="process-title" class="text-3xl sm:text-4xl font-heading font-extrabold text-dark mb-4">
+        {title}
+      </h2>
+      {subtitle && (
+        <p class="text-muted text-lg leading-relaxed">
+          {subtitle}
+        </p>
+      )}
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      {steps.map((step, index) => (
+        <article class="relative animate-in" style={`animation-delay: ${index * 150}ms`}>
+          <!-- Number Circle -->
+          <div class="absolute -top-4 left-1/2 -translate-x-1/2 w-16 h-16 rounded-full flex items-center justify-center text-white font-heading font-bold text-2xl z-10"
+               style={{ backgroundColor: step.bgColor }}>
+            {step.number}
+          </div>
+
+          <!-- Card -->
+          <div class="bg-white rounded-2xl border border-border p-8 pt-16 text-center relative">
+            <div class="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4"
+                 style={{ backgroundColor: `${step.bgColor}15` }}>
+              <span class="material-symbols-outlined text-3xl" style={{ color: step.iconColor }}>
+                {step.icon}
+              </span>
+            </div>
+
+            <h3 class="text-xl font-heading font-bold text-dark mb-3">
+              {step.title}
+            </h3>
+
+            <p class="text-muted leading-relaxed">
+              {step.description}
+            </p>
+          </div>
+
+          <!-- Connector Line -->
+          {index < steps.length - 1 && (
+            <div class="hidden lg:block absolute top-4 left-[50%] w-full h-0.5"
+                 style={{ backgroundColor: 'var(--color-border)' }} />
+          )}
+        </article>
+      ))}
+    </div>
+  </Container>
+</section>

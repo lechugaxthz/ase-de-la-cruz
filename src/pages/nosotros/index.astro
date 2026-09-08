@@ -1,0 +1,150 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import Hero from '../../components/sections/Hero.astro';
+import { getCollection } from 'astro:content';
+import Container from '../../components/ui/Container.astro';
+import Card from '../../components/ui/Card.astro';
+import Badge from '../../components/ui/Badge.astro';
+
+const historia = await getCollection('nosotros', 'historia');
+const valores = await getCollection('nosotros', 'valores');
+const equipo = await getCollection('equipo');
+const sortedEquipo = equipo.sort((a, b) => a.data.order - b.data.order);
+---
+
+<PageLayout
+  title="Nosotros - Ase de la Cruz"
+  description="Más de 20 años protegiendo el patrimonio de familias y empresas argentinas. Conocé nuestra historia, valores y equipo de asesores expertos."
+  image="/images/og-nosotros.jpg"
+>
+  <!-- Hero -->
+  <Hero
+    badge="Conocé Ase de la Cruz"
+    title="Más de 20 años protegiendo patrimonios"
+    subtitle="Nacimos en 2004 con una misión clara: poner los intereses de nuestros clientes por encima de cualquier comisión. Hoy somos un equipo de especialistas que te acompaña en cada decisión."
+    primaryCTA={{ label: 'Hablar con nosotros', href: '/contacto', icon: 'arrow_forward' }}
+    secondaryCTA={{ label: 'Ver equipo', href: '#equipo', icon: 'group' }}
+    minHeight="min-h-[60vh]"
+  />
+
+  <!-- Historia -->
+  {historia && (
+    <section id="historia" class="py-16 sm:py-24" aria-labelledby="historia-title">
+      <Container>
+        <div class="max-w-4xl mx-auto">
+          <h2 id="historia-title" class="text-3xl sm:text-4xl font-heading font-extrabold text-dark mb-8 text-center">
+            Nuestra Historia
+          </h2>
+          <div class="prose-custom max-w-none" set:html={historia.rendered?.html || ''} />
+        </div>
+      </Container>
+    </section>
+  )}
+
+  <!-- Valores -->
+  {valores && (
+    <section id="valores" class="py-16 sm:py-24 bg-surface" aria-labelledby="valores-title">
+      <Container>
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <h2 id="valores-title" class="text-3xl sm:text-4xl font-heading font-extrabold text-dark mb-4">
+            Nuestros Valores
+          </h2>
+          <p class="text-muted text-lg leading-relaxed">
+            Principios que guían cada decisión y cada interacción con nuestros clientes
+          </p>
+        </div>
+
+        <div class="prose-custom max-w-none" set:html={valores.rendered?.html || ''} />
+
+        <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+          <article class="bg-white p-8 rounded-2xl border border-border text-center hover:shadow-lg transition-shadow">
+            <div class="w-16 h-16 rounded-2xl bg-primary-light flex items-center justify-center mx-auto mb-6">
+              <span class="material-symbols-outlined text-4xl text-primary">shield</span>
+            </div>
+            <h3 class="text-xl font-heading font-bold text-dark mb-3">Transparencia</h3>
+            <p class="text-muted">Información clara, sin letra chica. Explicamos cada cobertura, exclusión y costo para que decidas con libertad.</p>
+          </article>
+
+          <article class="bg-white p-8 rounded-2xl border border-border text-center hover:shadow-lg transition-shadow">
+            <div class="w-16 h-16 rounded-2xl bg-primary-light flex items-center justify-center mx-auto mb-6">
+              <span class="material-symbols-outlined text-4xl text-primary">handshake</span>
+            </div>
+            <h3 class="text-xl font-heading font-bold text-dark mb-3">Defensa Activa</h3>
+            <p class="text-muted">En un siniestro, no te dejamos solo. Gestionamos, negociamos y defendemos tus derechos ante la aseguradora.</p>
+          </article>
+
+          <article class="bg-white p-8 rounded-2xl border border-border text-center hover:shadow-lg transition-shadow">
+            <div class="w-16 h-16 rounded-2xl bg-primary-light flex items-center justify-center mx-auto mb-6">
+              <span class="material-symbols-outlined text-4xl text-primary">psychology</span>
+            </div>
+            <h3 class="text-xl font-heading font-bold text-dark mb-3">Visión a Largo Plazo</h3>
+            <p class="text-muted">No vendemos pólizas, construimos estrategias de protección que evolucionan con vos y tu familia.</p>
+          </article>
+        </div>
+      </Container>
+    </section>
+  )}
+
+  <!-- Equipo -->
+  <section id="equipo" class="py-16 sm:py-24" aria-labelledby="equipo-title">
+    <Container>
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 id="equipo-title" class="text-3xl sm:text-4xl font-heading font-extrabold text-dark mb-4">
+          Nuestro Equipo
+        </h2>
+        <p class="text-muted text-lg leading-relaxed">
+          Especialistas dedicados a entender tus riesgos y diseñar la mejor protección
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {sortedEquipo.map((member, index) => (
+          <article class="animate-in" style={{ animationDelay: `${index * 150}ms` }}>
+            <Card variant="interactive" padding="md" hover>
+              {member.data.image && (
+                <div class="w-full h-48 rounded-xl overflow-hidden mb-6">
+                  <img src={member.data.image} alt={member.data.name} class="w-full h-full object-cover" loading="lazy" />
+                </div>
+              )}
+              {!member.data.image && (
+                <div class="w-full h-48 rounded-xl bg-primary-light flex items-center justify-center mb-6">
+                  <span class="material-symbols-outlined text-4xl text-primary">person</span>
+                </div>
+              )}
+
+              <div class="flex items-center gap-2 mb-3">
+                <h3 class="text-xl font-heading font-bold text-dark">{member.data.name}</h3>
+                {member.data.badge && (
+                  <Badge variant="primary" size="sm">{member.data.badge}</Badge>
+                )}
+              </div>
+
+              <p class="text-sm text-muted mb-4">{member.data.role}</p>
+
+              <p class="text-muted text-sm leading-relaxed mb-6 line-clamp-3">{member.data.bio}</p>
+
+              <div class="flex items-center gap-3">
+                {member.data.linkedin && (
+                  <a href={member.data.linkedin} target="_blank" rel="noopener noreferrer" class="text-muted hover:text-primary transition-colors" aria-label="LinkedIn de {member.data.name}">
+                    <span class="material-symbols-outlined text-lg">link</span>
+                  </a>
+                )}
+                {member.data.email && (
+                  <a href={`mailto:${member.data.email}`} class="text-muted hover:text-primary transition-colors" aria-label="Email de {member.data.name}">
+                    <span class="material-symbols-outlined text-lg">mail</span>
+                  </a>
+                )}
+              </div>
+            </Card>
+          </article>
+        ))}
+      </div>
+
+      {sortedEquipo.length === 0 && (
+        <div class="text-center py-16">
+          <p class="text-muted">Próximamente presentaremos a nuestro equipo de asesores.</p>
+        </div>
+      )}
+    </Container>
+  </section>
+</PageLayout>

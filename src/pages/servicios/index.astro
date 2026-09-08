@@ -1,0 +1,52 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import Hero from '../../components/sections/Hero.astro';
+import ServicesGrid from '../../components/sections/ServicesGrid.astro';
+import { getCollection } from 'astro:content';
+
+const servicios = await getCollection('servicios');
+const allServices = servicios.sort((a, b) => a.data.order - b.data.order);
+
+const categories = ['salud', 'vida', 'hogar', 'vehicular', 'empresas', 'art'];
+---
+
+<PageLayout
+  title="Servicios - Ase de la Cruz"
+  description="Coberturas integrales de seguros: Salud, Vida, Hogar, Automotores, Empresas y ART. Asesoramiento experto y defensa activa en siniestros."
+  image="/images/og-servicios.jpg"
+>
+  <!-- Hero -->
+  <Hero
+    badge="Nuestros Servicios"
+    title="Coberturas diseñadas para proteger lo que más valorás"
+    subtitle="Explorá nuestras soluciones de seguros por categoría. Cada cobertura es seleccionada y negociada con las aseguradoras más sólidas del mercado argentino."
+    primaryCTA={{ label: 'Solicitar Cotización', href: '/contacto', icon: 'arrow_forward' }}
+    secondaryCTA={{ label: 'Hablar con un asesor', href: '/contacto', icon: 'chat' }}
+    minHeight="min-h-[60vh]"
+  />
+
+  <!-- Services Grid -->
+  <ServicesGrid
+    services={allServices.map(s => ({ ...s.data, slug: s.slug }))}
+    title="Todas Nuestras Coberturas"
+    subtitle="Filtrá por categoría para encontrar la protección que necesitás"
+    filterable={true}
+    categories={categories}
+  />
+
+  <!-- CTA -->
+  <section class="py-16 sm:py-24 bg-primary-bg" aria-labelledby="servicios-cta">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 id="servicios-cta" class="text-3xl sm:text-4xl font-heading font-extrabold text-dark mb-4">
+        ¿No encontrás lo que buscás?
+      </h2>
+      <p class="text-muted text-lg mb-8 max-w-2xl mx-auto">
+        Tenemos acceso a coberturas especializadas y productos a medida. Contanos tu caso y te asesoramos sin compromiso.
+      </p>
+      <a href="/contacto" class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary-hover transition-colors">
+        <span class="material-symbols-outlined">chat</span>
+        Consultar coberturas especiales
+      </a>
+    </div>
+  </section>
+</PageLayout>

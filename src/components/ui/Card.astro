@@ -1,0 +1,27 @@
+---
+interface Props {
+  class?: string;
+  variant?: 'default' | 'bordered' | 'elevated' | 'interactive';
+  padding?: 'none' | 'sm' | 'md' | 'lg';
+  hover?: boolean;
+}
+const { class: className = '', variant = 'default', padding = 'md', hover = false } = Astro.props;
+const variantClasses = {
+  default: 'bg-white shadow-sm',
+  bordered: 'bg-white border border-border',
+  elevated: 'bg-white shadow-md',
+  interactive: 'bg-white border border-border transition-all duration-300',
+};
+const paddingClasses = {
+  none: '',
+  sm: 'p-4 sm:p-6',
+  md: 'p-6 sm:p-8',
+  lg: 'p-8 sm:p-10',
+};
+const hoverClasses = hover ? 'hover:shadow-lg hover:-translate-y-1' : '';
+const interactiveHover = variant === 'interactive' ? 'hover:shadow-lg hover:-translate-y-1 hover:border-primary/30' : '';
+const classList = ['rounded-2xl', variantClasses[variant], paddingClasses[padding], hoverClasses, interactiveHover, className].join(' ');
+---
+<div class={classList}>
+  <slot />
+</div>

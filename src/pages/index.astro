@@ -1,0 +1,163 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Hero from '../components/sections/Hero.astro';
+import ServicesGrid from '../components/sections/ServicesGrid.astro';
+import ProcessSteps from '../components/sections/ProcessSteps.astro';
+import Testimonial from '../components/sections/Testimonial.astro';
+import Partners from '../components/sections/Partners.astro';
+import CTA from '../components/sections/CTA.astro';
+import { getCollection } from 'astro:content';
+import { CONTACT } from '../lib/constants';
+
+const servicios = await getCollection('servicios');
+const featuredServices = servicios.filter(s => s.data.featured).sort((a, b) => a.data.order - b.data.order);
+const allServices = servicios.sort((a, b) => a.data.order - b.data.order);
+
+const methodSteps = [
+  {
+    number: 1,
+    title: 'Evaluación',
+    description: 'Analizamos en profundidad sus riesgos actuales, pólizas vigentes y vulnerabilidades ocultas.',
+    icon: 'analytics',
+    bgColor: '#D97706',
+    iconColor: '#FFFFFF',
+  },
+  {
+    number: 2,
+    title: 'Estrategia',
+    description: 'Diseñamos un plan de cobertura a medida, eliminando gastos innecesarios y vacíos legales.',
+    icon: 'design_services',
+    bgColor: '#F59E0B',
+    iconColor: '#1E293B',
+  },
+  {
+    number: 3,
+    title: 'Implementación',
+    description: 'Gestionamos la contratación y negociación directa con las aseguradoras más sólidas del mercado.',
+    icon: 'handshake',
+    bgColor: '#FCD34D',
+    iconColor: '#1E293B',
+  },
+  {
+    number: 4,
+    title: 'Acompañamiento',
+    description: 'Monitoreo continuo y defensa activa en caso de siniestros. Nunca estará solo ante un reclamo.',
+    icon: 'support_agent',
+    bgColor: '#FEF3C7',
+    iconColor: '#1E293B',
+  },
+];
+
+const partners = [
+  { name: 'Sancor Seguros', logo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=100&fit=crop', featured: true },
+  { name: 'San Cristóbal', logo: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=200&h=100&fit=crop' },
+  { name: 'Zurich', logo: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=200&h=100&fit=crop' },
+  { name: 'MetLife', logo: 'https://images.unsplash.com/photo-1559526324-593bc073d938?w=200&h=100&fit=crop' },
+  { name: 'Provincia ART', logo: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=200&h=100&fit=crop' },
+  { name: 'OMINT ART', logo: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=200&h=100&fit=crop' },
+];
+---
+
+<PageLayout
+  title="Ase de la Cruz - Asesoramiento Experto en Seguros"
+  description="Protegemos tu patrimonio con estrategias personalizadas. Seguros de vida, hogar, auto, empresas y ART. Más de 20 años de experiencia."
+  image="/images/og-default.jpg"
+>
+  <!-- Hero -->
+  <Hero
+    badge="Protección Patrimonial"
+    title="¿Tu patrimonio está realmente protegido?"
+    subtitle="Aseguramos lo que más valorás con estrategias personalizadas diseñadas por expertos en gestión de riesgos financieros y defensa legal."
+    primaryCTA={{ label: 'Solicitar Asesoría', href: '/contacto', icon: 'arrow_forward' }}
+    secondaryCTA={{ label: 'Explorar Coberturas', href: '/servicios', icon: 'shield' }}
+  />
+
+  <!-- Propuesta (3 highlight services) -->
+  <section id="propuesta" class="py-16 sm:py-24 bg-surface" aria-labelledby="propuesta-title">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 id="propuesta-title" class="text-3xl sm:text-4xl font-heading font-extrabold text-dark mb-4">
+          Nuestra Propuesta
+        </h2>
+        <p class="text-muted text-lg leading-relaxed">
+          Tres pilares fundamentales que definen cómo trabajamos para proteger tu tranquilidad
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <article class="bg-white p-8 rounded-2xl shadow-sm border border-border hover:shadow-lg hover:-translate-y-1 transition-all duration-300 text-center">
+          <div class="w-16 h-16 rounded-2xl bg-primary-light flex items-center justify-center mx-auto mb-6">
+            <span class="material-symbols-outlined text-4xl text-primary">shield</span>
+          </div>
+          <h3 class="text-xl font-heading font-bold text-dark mb-3">
+            ¿Qué vendemos?
+          </h3>
+          <p class="text-muted leading-relaxed">
+            Seguros integrales que van más allá de una póliza; ofrecemos soluciones de continuidad para su estilo de vida y operaciones comerciales.
+          </p>
+        </article>
+
+        <article class="bg-white p-8 rounded-2xl shadow-sm border border-border hover:shadow-lg hover:-translate-y-1 transition-all duration-300 text-center">
+          <div class="w-16 h-16 rounded-2xl bg-primary-light flex items-center justify-center mx-auto mb-6">
+            <span class="material-symbols-outlined text-4xl text-primary">domain</span>
+          </div>
+          <h3 class="text-xl font-heading font-bold text-dark mb-3">
+            ¿Qué cubrimos?
+          </h3>
+          <ul class="space-y-2 text-muted text-left">
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span>Salud & Bienestar</li>
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span>Vida & Ahorro</li>
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span>Hogar & Patrimonio</li>
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span>Soluciones para Empresa</li>
+          </ul>
+        </article>
+
+        <article class="bg-white p-8 rounded-2xl shadow-sm border border-border hover:shadow-lg hover:-translate-y-1 transition-all duration-300 text-center">
+          <div class="w-16 h-16 rounded-2xl bg-primary-light flex items-center justify-center mx-auto mb-6">
+            <span class="material-symbols-outlined text-4xl text-primary">psychology</span>
+          </div>
+          <h3 class="text-xl font-heading font-bold text-dark mb-3">
+            ¿Qué hacemos?
+          </h3>
+          <p class="text-muted leading-relaxed">
+            Realizamos análisis de riesgos profundos y actuamos como su defensa férrea ante las aseguradoras, garantizando que sus derechos se respeten.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonial -->
+  <Testimonial
+    quote="Un seguro no es un gasto, es la tranquilidad de saber que tu futuro está en manos expertas."
+    author="Ase de la Cruz Assurance Group"
+    role="Equipo de Asesores"
+  />
+
+  <!-- Método -->
+  <ProcessSteps
+    title="Nuestro Método"
+    subtitle="Un proceso probado de 4 pasos para proteger tu patrimonio sin complicaciones"
+    steps={methodSteps}
+  />
+
+  <!-- Servicios Destacados -->
+  <ServicesGrid
+    services={allServices.map(s => ({ ...s.data, slug: s.slug }))}
+    title="Todos Nuestros Servicios"
+    subtitle="Explorá nuestras coberturas por categoría"
+    filterable={true}
+  />
+
+  <!-- Partners -->
+  <Partners partners={partners} />
+
+  <!-- CTA Final -->
+  <CTA
+    title="Proteja su futuro hoy mismo"
+    subtitle="Déjenos sus datos y uno de nuestros asesores expertos se comunicará con usted para diseñar un plan a su medida."
+    primaryCTA={{ label: 'Solicitar Asesoría', href: '/contacto', icon: 'arrow_forward' }}
+    secondaryCTA={{ label: 'Llamar ahora', href: `https://wa.me/${CONTACT.phones[0].whatsapp}`, icon: 'chat' }}
+    background="primary-light"
+  />
+</PageLayout>

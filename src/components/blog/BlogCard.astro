@@ -1,0 +1,119 @@
+---
+import Badge from '../ui/Badge.astro';
+import Button from '../ui/Button.astro';
+import { formatDate } from '../../lib/utils';
+
+interface Post {
+  slug: string;
+  data: {
+    title: string;
+    description: string;
+    pubDate: Date;
+    updatedDate?: Date;
+    heroImage?: string;
+    category: string;
+    tags: string[];
+    author: string;
+    draft: boolean;
+  };
+}
+
+interface Props {
+  post: Post;
+  variant?: "featured" | "default";
+}
+
+const { post, variant = "default" } = Astro.props;
+const { slug, data } = post;
+const formattedDate = formatDate(data.pubDate);
+const hasImage = data.heroImage && variant === "featured";
+const isFeatured = variant === "featured";
+
+const categoryBadgeHtml = `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-sm font-medium bg-primary-light text-primary border border-primary/20"><span class="w-1.5 h-1.5 rounded-full bg-current"></span>${data.category}</span>`;
+
+const tagsHtml = data.tags.slice(0, 2).map(tag => 
+  `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium border-2 border-primary/20 text-primary hover:border-primary transition-colors">#${tag}</span>`
+).join('');
+
+const articleClass = "animate-in " + (isFeatured ? "mb-16" : "");
+---
+
+<article class={articleClass}>
+  {hasImage && (
+    <div class="mb-6 rounded-2xl overflow-hidden shadow-lg aspect-video">
+      <img src={data.heroImage} alt="" class="w-full h-full object-cover" loading="eager" fetchpriority="high" />
+    </div>
+  )}
+
+  {isFeatured && (
+    <div class="grid lg:grid-cols-2 gap-8 items-start">
+      <div class="lg:pr-8">
+        <div class="flex flex-wrap gap-2 mb-4">
+          {categoryBadgeHtml}
+          {tagsHtml}
+        </div>
+
+        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-heading font-bold text-dark mb-4 leading-tight">
+          <a href={"/blog/" + slug} class="hover:text-primary transition-colors">
+            {data.title}
+          </a>
+        </h2>
+
+        <p class="text-muted leading-relaxed mb-6 line-clamp-3">
+          {data.description}
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted">
+          <div class="flex items-center gap-4">
+            <span class="flex items-center gap-1">
+              <span class="material-symbols-outlined text-base">person</span>
+              {data.author}
+            </span>
+            <time class="flex items-center gap-1" dateTime={data.pubDate.toISOString()}>
+              <span class="material-symbols-outlined text-base">schedule</span>
+              {formattedDate}
+            </time>
+          </div>
+
+          <Button variant="ghost" size="sm" href={"/blog/" + slug} icon="arrow_forward" iconPosition="right">
+            Leer mas
+          </Button>
+        </div>
+      </div>
+    </div>
+  )}
+
+  {!isFeatured && (
+    <div>
+      <div class="flex flex-wrap gap-2 mb-4">
+        {categoryBadgeHtml}
+        {tagsHtml}
+      </div>
+
+      <h2 class="text-xl sm:text-2xl font-heading font-bold text-dark mb-3 leading-tight">
+        <a href={"/blog/" + slug} class="hover:text-primary transition-colors">
+          {data.title}
+        </a>
+      </h2>
+
+      <p class="text-muted leading-relaxed mb-4 line-clamp-3">
+        {data.description}
+      </p>
+
+      <div class="pt-4 border-t border-border">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-4 text-sm text-muted">
+            <time dateTime={data.pubDate.toISOString()}>
+              <span class="material-symbols-outlined text-base">schedule</span>
+              {formattedDate}
+            </time>
+            {categoryBadgeHtml}
+          </div>
+          <Button variant="ghost" size="sm" href={"/blog/" + slug} icon="arrow_forward" iconPosition="right">
+            Leer
+          </Button>
+        </div>
+      </div>
+    </div>
+  )}
+</article>

@@ -1,0 +1,39 @@
+---
+interface Props {
+  variant?: 'primary' | 'outline' | 'ghost';
+  size?: 'sm' | 'md' | 'lg';
+  href?: string;
+  fullWidth?: boolean;
+  icon?: string;
+  iconPosition?: 'left' | 'right';
+  class?: string;
+}
+const { variant = 'primary', size = 'md', href, fullWidth = false, icon, iconPosition = 'right', class: className = '' } = Astro.props;
+const base = 'inline-flex items-center justify-center font-bold rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
+const variants = {
+  primary: 'bg-primary text-white hover:bg-primary-hover shadow-sm hover:shadow-md',
+  outline: 'border-2 border-primary text-primary bg-transparent hover:bg-primary-light',
+  ghost: 'text-primary hover:bg-primary-light',
+};
+const sizes = {
+  sm: 'px-3 py-2 text-sm gap-1.5',
+  md: 'px-5 py-3 text-base gap-2',
+  lg: 'px-7 py-4 text-lg gap-2.5',
+};
+const width = fullWidth ? 'w-full' : '';
+const iconEl = icon ? `<span class="material-symbols-outlined text-lg">{icon}</span>` : '';
+const classList = [base, variants[variant], sizes[size], width, className].join(' ');
+---
+{href ? (
+  <a class={classList} href={href}>
+    {icon && iconPosition === 'left' && iconEl}
+    <slot />
+    {icon && iconPosition === 'right' && iconEl}
+  </a>
+) : (
+  <button class={classList} type="button">
+    {icon && iconPosition === 'left' && iconEl}
+    <slot />
+    {icon && iconPosition === 'right' && iconEl}
+  </button>
+)}

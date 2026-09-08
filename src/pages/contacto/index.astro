@@ -1,0 +1,198 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import Hero from '../../components/sections/Hero.astro';
+import Container from '../../components/ui/Container.astro';
+import { CONTACT, BUSINESS_INFO } from '../../lib/constants';
+---
+
+<PageLayout
+  title="Contacto - Ase de la Cruz"
+  description="Solicitá tu asesoría sin cargo. Te contactamos en menos de 24hs para analizar tus riesgos y diseñar la mejor estrategia de protección."
+  image="/images/og-contacto.jpg"
+>
+  <!-- Hero -->
+  <Hero
+    badge="Contacto"
+    title="Hablemos de tu protección"
+    subtitle="Completá el formulario y un asesor experto se comunicará con vos para analizar tu caso sin compromiso ni costo."
+    primaryCTA={{ label: '', href: '#' }}
+    secondaryCTA={{ label: '', href: '#' }}
+    minHeight="min-h-[50vh]"
+  />
+
+  <section class="py-16 sm:py-24" aria-labelledby="contacto-title">
+    <Container>
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16">
+        <!-- Form -->
+        <div>
+          <h2 id="contacto-title" class="text-3xl sm:text-4xl font-heading font-extrabold text-dark mb-8">
+            Solicitá tu asesoría
+          </h2>
+          
+          <form id="contact-form" class="space-y-6" action="/api/contact" method="POST">
+            <div class="grid sm:grid-cols-2 gap-6">
+              <div>
+                <label for="nombre" class="block text-sm font-medium text-dark mb-2">Nombre completo <span class="text-error" aria-hidden="true">*</span></label>
+                <input type="text" id="nombre" name="nombre" required class="w-full px-4 py-3 rounded-lg border border-border bg-white text-dark placeholder:text-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary" placeholder="Juan Pérez" autocomplete="name" />
+              </div>
+              <div>
+                <label for="email" class="block text-sm font-medium text-dark mb-2">Email <span class="text-error" aria-hidden="true">*</span></label>
+                <input type="email" id="email" name="email" required class="w-full px-4 py-3 rounded-lg border border-border bg-white text-dark placeholder:text-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary" placeholder="juan@email.com" autocomplete="email" />
+              </div>
+            </div>
+
+            <div class="grid sm:grid-cols-2 gap-6">
+              <div>
+                <label for="telefono" class="block text-sm font-medium text-dark mb-2">Teléfono / WhatsApp</label>
+                <input type="tel" id="telefono" name="telefono" class="w-full px-4 py-3 rounded-lg border border-border bg-white text-dark placeholder:text-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary" placeholder="+54 11 2345-6789" autocomplete="tel" />
+              </div>
+              <div>
+                <label for="interes" class="block text-sm font-medium text-dark mb-2">Interés principal</label>
+                <select id="interes" name="interes" class="w-full px-4 py-3 rounded-lg border border-border bg-white text-dark appearance-none focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary">
+                  <option value="" disabled selected>Seleccioná una opción</option>
+                  <option value="salud">Salud & Bienestar</option>
+                  <option value="vida">Vida & Ahorro</option>
+                  <option value="hogar">Hogar & Patrimonio</option>
+                  <option value="vehicular">Automotores</option>
+                  <option value="empresas">Empresas & ART</option>
+                  <option value="auditoria">Auditoría de cartera</option>
+                  <option value="otros">Otro / No estoy seguro</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label for="mensaje" class="block text-sm font-medium text-dark mb-2">Mensaje <span class="text-error" aria-hidden="true">*</span></label>
+              <textarea id="mensaje" name="mensaje" rows="5" required class="w-full px-4 py-3 rounded-lg border border-border bg-white text-dark placeholder:text-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary resize-y min-h-[120px]" placeholder="Contanos brevemente tu situación, qué coberturas tenés actualmente, qué te preocupa o qué buscás proteger..."></textarea>
+            </div>
+
+            <div class="flex items-start gap-3">
+              <input type="checkbox" id="privacidad" name="privacidad" required class="mt-1 w-5 h-5 rounded border-border text-primary focus:ring-primary/30" />
+              <label for="privacidad" class="text-sm text-muted">
+                Acepto la <a href="/privacidad" class="underline hover:text-primary">Política de Privacidad</a> y autorizo a que me contacten para asesoramiento en seguros.
+              </label>
+            </div>
+
+            <button type="submit" class="w-full sm:w-auto px-8 py-4 bg-primary text-white font-bold rounded-lg hover:bg-primary-hover transition-colors flex items-center gap-2">
+              <span class="material-symbols-outlined">send</span>
+              Enviar solicitud
+            </button>
+
+            <p class="text-xs text-muted text-center sm:text-left">
+              Te responderemos en menos de 24hs hábiles. Sin compromiso, sin costo.
+            </p>
+          </form>
+
+          <!-- Toast notification -->
+          <div id="form-toast" class="hidden fixed bottom-6 right-6 z-50 px-6 py-4 rounded-lg shadow-lg max-w-sm" role="alert" aria-live="polite"></div>
+        </div>
+
+        <!-- Info Contacto -->
+        <div class="lg:pl-8">
+          <h3 class="text-2xl font-heading font-bold text-dark mb-8">Otras formas de contactarnos</h3>
+
+          <div class="space-y-6">
+            <a href={`https://wa.me/${CONTACT.phones[0].whatsapp}`} target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 p-6 bg-white rounded-2xl border border-border hover:shadow-lg hover:border-primary/50 transition-all duration-300">
+              <div class="w-14 h-14 rounded-xl bg-green-100 flex items-center justify-center">
+                <svg class="w-7 h-7 text-green-600" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.263.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004c-1.453 0-2.906-.54-3.947-1.453-.94-.814-1.653-1.825-1.785-2.082-.149-.265-.272-.52-.42-.57-.149-.05-.347-.05-.52-.05-.182 0-.488.05-.67.199-.2.134-.879.62-1.059.746-.173.124-.347.273-.497.399-.149.124-.198.185-.298.185-.106 0-.198-.05-.272-.149-.074-.092-.005-.2-.005-.422 0-.213.13-.457.406-.695.124-.105.252-.207.372-.301.149-.099.21-.154.406-.318.248-.207.555-.528.747-.728.476-.502.555-.799.709-.951.149-.149.21-.198.298-.198.217 0 1.213 1.719 1.248 1.786.033.067.543.606 1.108 1.31.496.6.84 1.113 1.072 1.462.118.173.173.301.173.458 0 .182-.133.272-.487.272-.192 0-.355-.012-.51-.05-.16-.042-.32-.11-.457-.153z"/></svg>
+              </div>
+              <div>
+                <h4 class="font-bold text-dark">WhatsApp Directo</h4>
+                <p class="text-muted text-sm">{CONTACT.phones[0].label}</p>
+                <p class="text-primary text-sm font-medium mt-1">Respuesta inmediata en horario laboral</p>
+              </div>
+            </a>
+
+            <a href={`tel:${CONTACT.phones[0].number}`} class="flex items-center gap-4 p-6 bg-white rounded-2xl border border-border hover:shadow-lg hover:border-primary/50 transition-all duration-300">
+              <div class="w-14 h-14 rounded-xl bg-primary-light flex items-center justify-center">
+                <span class="material-symbols-outlined text-2xl text-primary">call</span>
+              </div>
+              <div>
+                <h4 class="font-bold text-dark">Llamar por Teléfono</h4>
+                <p class="text-muted text-sm">{CONTACT.phones[0].label}</p>
+                <p class="text-primary text-sm font-medium mt-1">Lunes a Viernes 9:00 - 18:00</p>
+              </div>
+            </a>
+
+            <a href={`mailto:${CONTACT.email}`} class="flex items-center gap-4 p-6 bg-white rounded-2xl border border-border hover:shadow-lg hover:border-primary/50 transition-all duration-300">
+              <div class="w-14 h-14 rounded-xl bg-blue-100 flex items-center justify-center">
+                <span class="material-symbols-outlined text-2xl text-blue-600">mail</span>
+              </div>
+              <div>
+                <h4 class="font-bold text-dark">Enviar Email</h4>
+                <p class="text-muted text-sm">{CONTACT.email}</p>
+                <p class="text-primary text-sm font-medium mt-1">Respuesta en menos de 24hs</p>
+              </div>
+            </a>
+
+            <div class="flex items-center gap-4 p-6 bg-white rounded-2xl border border-border">
+              <div class="w-14 h-14 rounded-xl bg-amber-100 flex items-center justify-center">
+                <span class="material-symbols-outlined text-2xl text-amber-600">place</span>
+              </div>
+              <div>
+                <h4 class="font-bold text-dark">Oficina</h4>
+                <p class="text-muted text-sm">{CONTACT.address}</p>
+                <p class="text-primary text-sm font-medium mt-1">Solo con cita previa</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Beneficios -->
+          <div class="mt-12 p-6 bg-primary-bg rounded-2xl">
+            <h4 class="font-bold text-dark mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary">verified</span>
+              ¿Por qué contactarnos?
+            </h4>
+            <ul class="space-y-2 text-sm text-muted">
+              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span>Auditoría gratuita de tu cartera actual</li>
+              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span>Análisis de riesgos sin compromiso</li>
+              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span>Acceso a 6+ aseguradoras de primera línea</li>
+              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span>Defensa activa en siniestros</li>
+              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span>Más de 5.000 clientes nos respaldan</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <script>
+    // Form submission with fetch
+    document.getElementById('contact-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const toast = document.getElementById('form-toast');
+      const formData = new FormData(form);
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> Enviando...';
+
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          body: formData,
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          toast.className = 'fixed bottom-6 right-6 z-50 px-6 py-4 rounded-lg shadow-lg max-w-sm bg-success text-white';
+          toast.innerHTML = '<div class="flex items-center gap-3"><span class="material-symbols-outlined">check_circle</span><div><strong>¡Enviado!</strong><br>Te contactaremos en menos de 24hs.</div></div>';
+          form.reset();
+        } else {
+          throw new Error(result.message || 'Error al enviar');
+        }
+      } catch (error) {
+        toast.className = 'fixed bottom-6 right-6 z-50 px-6 py-4 rounded-lg shadow-lg max-w-sm bg-error text-white';
+        toast.innerHTML = `<div class="flex items-center gap-3"><span class="material-symbols-outlined">error</span><div><strong>Error</strong><br>${error.message || 'No se pudo enviar. Intentá por WhatsApp o email.'}</div></div>`;
+      }
+
+      toast.classList.remove('hidden');
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<span class="material-symbols-outlined">send</span> Enviar solicitud';
+
+      setTimeout(() => toast.classList.add('hidden'), 6000);
+    });
+  </script>
+</PageLayout>

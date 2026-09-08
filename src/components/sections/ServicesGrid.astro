@@ -1,0 +1,193 @@
+---
+import Card from '../ui/Card.astro';
+import Badge from '../ui/Badge.astro';
+import Button from '../ui/Button.astro';
+import Container from '../ui/Container.astro';
+
+interface ServiceData {
+  title: string;
+  description: string;
+  icon: string;
+  category: string;
+  featured?: boolean;
+  order: number;
+  insurer?: string;
+  coverages?: string[];
+  ctaText?: string;
+  slug?: string;
+}
+
+interface Props {
+  services: ServiceData[];
+  title?: string;
+  subtitle?: string;
+  filterable?: boolean;
+  categories?: string[];
+  class?: string;
+}
+
+const {
+  services,
+  title = 'Nuestros Servicios',
+  subtitle = 'Coberturas integrales diseñadas para proteger lo que más valorás',
+  filterable = true,
+  categories = ['salud', 'vida', 'hogar', 'vehicular', 'empresas', 'art'],
+  class: className = '',
+} = Astro.props;
+
+const sortedServices = [...services].sort((a, b) => a.order - b.order);
+
+const categoryLabels: Record<string, string> = {
+  salud: 'Salud',
+  vida: 'Vida',
+  hogar: 'Hogar',
+  vehicular: 'Automotores',
+  empresas: 'Empresas',
+  art: 'ART',
+};
+---
+
+<section id="servicios" class={`py-16 sm:py-24 lg:py-32 ${className}`} aria-labelledby="services-title">
+  <Container>
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <h2 id="services-title" class="text-3xl sm:text-4xl font-heading font-extrabold text-dark mb-4">
+        {title}
+      </h2>
+      {subtitle && (
+        <p class="text-muted text-lg leading-relaxed">
+          {subtitle}
+        </p>
+      )}
+    </div>
+
+    {filterable && categories.length > 1 && (
+      <div class="flex flex-wrap justify-center gap-2 mb-12" role="tablist" aria-label="Filtrar servicios por categoría" data-filter-tabs>
+        <button
+          role="tab"
+          aria-selected="true"
+          aria-controls="panel-all"
+          class="filter-tab px-4 py-2 rounded-full text-sm font-bold transition-all border-2 bg-primary border-primary text-white"
+          data-filter="all"
+        >
+          Todos
+        </button>
+        {categories.map(cat => (
+          <button
+            role="tab"
+            aria-selected="false"
+            aria-controls={`panel-${cat}`}
+            class="filter-tab px-4 py-2 rounded-full text-sm font-bold transition-all border-2 bg-transparent border-primary/20 text-primary hover:border-primary"
+            data-filter={cat}
+          >
+            {categoryLabels[cat] || cat}
+          </button>
+        ))}
+      </div>
+    )}
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" role="list" aria-label="Lista de servicios">
+      {sortedServices.map((service, index) => (
+        <article
+          role="listitem"
+          class="service-card animate-in"
+          style={`animation-delay: ${index * 100}ms`}
+          data-category={service.category}
+        >
+          <Card variant="interactive" padding="md" hover>
+            <div class="w-14 h-14 rounded-xl bg-primary-light flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <span class="material-symbols-outlined text-3xl text-primary">{service.icon}</span>
+            </div>
+
+            {service.category && (
+              <div class="mb-3">
+                <Badge variant="primary" size="sm" dot>
+                  {categoryLabels[service.category] || service.category}
+                </Badge>
+              </div>
+            )}
+
+            <h3 class="text-xl font-heading font-bold text-dark mb-3">
+              {service.title}
+            </h3>
+
+            {service.insurer && (
+              <p class="text-sm text-muted mb-4 flex items-center gap-1">
+                <span class="material-symbols-outlined text-base">verified</span>
+                {service.insurer}
+              </p>
+            )}
+
+            <p class="text-muted mb-6 leading-relaxed line-clamp-3">
+              {service.description}
+            </p>
+
+            {service.coverages && service.coverages.length > 0 && (
+              <ul class="space-y-2 mb-6 border-t border-border pt-4" role="list">
+                {service.coverages.slice(0, 4).map(coverage => (
+                  <li class="flex items-center gap-2 text-sm text-muted">
+                    <span class="material-symbols-outlined text-primary text-base">check_circle</span>
+                    {coverage}
+                  </li>
+                ))}
+                {service.coverages.length > 4 && (
+                  <li class="flex items-center gap-2 text-sm text-primary font-medium">
+                    <span class="material-symbols-outlined text-base">expand_more</span>
+                    +{service.coverages.length - 4} coberturas más
+                  </li>
+                )}
+              </ul>
+            )}
+
+            <Button
+              variant="outline"
+              fullWidth
+              href={`/contacto?interes=${service.category}`}
+              icon="arrow_forward"
+              iconPosition="right"
+            >
+              {service.ctaText || 'Cotizar'}
+            </Button>
+          </Card>
+        </article>
+      ))}
+    </div>
+
+    {sortedServices.length === 0 && (
+      <div class="text-center py-16">
+        <p class="text-muted">No hay servicios disponibles en esta categoría.</p>
+      </div>
+    )}
+  </Container>
+</section>
+
+<script>
+  const tabs = document.querySelectorAll('[data-filter-tabs] .filter-tab');
+  const cards = document.querySelectorAll('[data-category]');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const filter = tab.dataset.filter;
+
+      tabs.forEach(t => {
+        t.classList.remove('bg-primary', 'text-white');
+        t.classList.add('bg-transparent', 'border-primary/20', 'text-primary');
+        t.setAttribute('aria-selected', 'false');
+      });
+      tab.classList.add('bg-primary', 'text-white');
+      tab.classList.remove('bg-transparent', 'border-primary/20', 'text-primary');
+      tab.setAttribute('aria-selected', 'true');
+
+      cards.forEach(card => {
+        const category = card.dataset.category;
+        const shouldShow = filter === 'all' || category === filter;
+
+        if (shouldShow) {
+          card.style.display = '';
+          card.classList.add('animate-in');
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
